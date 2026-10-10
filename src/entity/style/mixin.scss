@@ -1,0 +1,85 @@
+@use "./variable" as v;
+
+// Centered page column used by every page module.
+@mixin page-column {
+  width: 100%;
+  max-width: v.$content-width;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+
+  @media (max-width: v.$mobile) {
+    padding: 20px 16px 48px;
+  }
+}
+
+// White bordered card surface.
+@mixin card {
+  border: 1px solid v.$line;
+  border-radius: v.$radius;
+  background: v.$surface;
+}
+
+// Narrow centered card used by the login and signup pages: `{name}-card`, `-divider`, `-footer`, `-alert`.
+@mixin auth-card($name) {
+  .#{$name}-card {
+    @include card;
+    width: min(420px, 100%);
+    display: grid;
+    gap: 20px;
+    margin: 24px auto 0;
+    padding: 36px 32px;
+
+    @media (max-width: v.$mobile) {
+      padding: 28px 20px;
+    }
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      text-align: center;
+    }
+  }
+
+  .#{$name}-description {
+    margin-top: -12px;
+    color: v.$muted;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .#{$name}-alert {
+    padding: 12px 14px;
+    border-radius: v.$radius;
+    background: v.$danger-soft;
+    color: v.$danger;
+    font-size: 14px;
+  }
+
+  .#{$name}-divider {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: v.$muted;
+    font-size: 13px;
+
+    &::before,
+    &::after {
+      content: "";
+      height: 1px;
+      flex: 1;
+      background: v.$line;
+    }
+  }
+
+  .#{$name}-footer {
+    color: v.$muted;
+    font-size: 14px;
+    text-align: center;
+
+    a {
+      margin-left: 6px;
+      color: v.$accent;
+      font-weight: 600;
+    }
+  }
+}

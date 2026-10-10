@@ -1,0 +1,61 @@
+@use "../../entity/style/variable" as v;
+@use "../../entity/style/mixin";
+
+.post-article {
+  @include mixin.card;
+
+  .post-article-header {
+    padding: 28px 28px 20px;
+    border-bottom: 1px solid v.$line;
+
+    h1 {
+      font-size: 24px;
+      font-weight: 700;
+      line-height: 1.35;
+      overflow-wrap: anywhere;
+    }
+  }
+
+  .post-article-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+    color: v.$muted;
+    font-size: 14px;
+  }
+
+  .post-article-author {
+    color: v.$sub;
+    font-weight: 600;
+  }
+
+  .post-article-content {
+    min-height: 200px;
+    padding: 28px;
+    font-size: 16px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+  }
+
+  .post-article-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 16px 28px;
+    border-top: 1px solid v.$line;
+  }
+
+  @media (max-width: v.$mobile) {
+    .post-article-header,
+    .post-article-content {
+      padding: 20px;
+    }
+
+    .post-article-actions {
+      padding: 14px 20px;
+    }
+  }
+}

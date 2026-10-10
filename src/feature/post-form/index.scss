@@ -1,0 +1,17 @@
+@use "../../entity/style/variable" as v;
+
+.post-form {
+  display: grid;
+  gap: 20px;
+
+  .post-form-error {
+    color: v.$danger;
+    font-size: 14px;
+  }
+
+  .post-form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}

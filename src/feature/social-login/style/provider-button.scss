@@ -1,0 +1,33 @@
+@use "../../../entity/style/variable" as v;
+
+.provider-button {
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border-radius: v.$radius;
+  font-size: 15px;
+  font-weight: 600;
+  transition: filter 0.15s;
+
+  &:hover {
+    filter: brightness(0.97);
+  }
+
+  &:focus-visible {
+    outline: 2px solid v.$accent;
+    outline-offset: 2px;
+  }
+
+  &.is-kakao {
+    background: v.$kakao;
+    color: v.$kakao-ink;
+  }
+
+  &.is-google {
+    border: 1px solid v.$line-strong;
+    background: v.$surface;
+    color: v.$ink;
+  }
+}

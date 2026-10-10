@@ -1,0 +1,10 @@
+@use "../../entity/style/mixin";
+@use "../../entity/ui/text-field";
+@use "../../feature/social-login";
+@use "../../feature/email-login-form";
+@use "../../widget/header";
+
+.login {
+  @include mixin.page-column;
+  @include mixin.auth-card("login");
+}

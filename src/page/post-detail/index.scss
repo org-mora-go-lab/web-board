@@ -1,0 +1,25 @@
+@use "../../entity/style/variable" as v;
+@use "../../entity/style/mixin";
+@use "../../entity/ui/confirm-popup";
+@use "../../entity/ui/status-message";
+@use "../../widget/header";
+@use "../../widget/post-article";
+
+.post-detail {
+  @include mixin.page-column;
+
+  .post-detail-alert {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    border-radius: v.$radius;
+    background: v.$danger-soft;
+    color: v.$danger;
+    font-size: 14px;
+  }
+
+  .post-detail-owner-actions {
+    display: flex;
+    gap: 8px;
+    margin-left: auto;
+  }
+}

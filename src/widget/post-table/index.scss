@@ -1,0 +1,50 @@
+@use "../../entity/style/variable" as v;
+@use "./style/post-row";
+
+.post-table {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+
+  .post-table-id {
+    width: 72px;
+  }
+
+  .post-table-author {
+    width: 140px;
+  }
+
+  .post-table-date {
+    width: 112px;
+  }
+
+  th {
+    padding: 12px;
+    background: #fafbfc;
+    color: v.$muted;
+    font-size: 13px;
+    font-weight: 600;
+    text-align: left;
+
+    &:first-child,
+    &:last-child {
+      text-align: center;
+    }
+  }
+
+  // Phones keep only the title and date columns.
+  @media (max-width: v.$mobile) {
+    .post-table-id,
+    .post-table-author,
+    th:nth-child(1),
+    th:nth-child(3),
+    td:nth-child(1),
+    td:nth-child(3) {
+      display: none;
+    }
+
+    .post-table-date {
+      width: 84px;
+    }
+  }
+}

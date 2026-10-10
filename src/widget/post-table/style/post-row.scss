@@ -1,0 +1,41 @@
+@use "../../../entity/style/variable" as v;
+
+.post-row {
+  td {
+    padding: 14px 12px;
+    border-top: 1px solid v.$line;
+    color: v.$sub;
+    font-size: 14px;
+  }
+
+  &:hover td {
+    background: #fafbfc;
+  }
+
+  .post-row-id,
+  .post-row-date {
+    color: v.$muted;
+    text-align: center;
+    white-space: nowrap;
+  }
+
+  .post-row-title a {
+    display: block;
+    overflow: hidden;
+    color: v.$ink;
+    font-size: 15px;
+    font-weight: 500;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    &:hover {
+      color: v.$accent;
+    }
+  }
+
+  .post-row-author {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
