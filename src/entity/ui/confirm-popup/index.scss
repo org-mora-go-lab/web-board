@@ -1,0 +1,47 @@
+@use "../../style/variable" as v;
+
+// Modal dialog with `-content`, `-title` and `-actions` parts.
+.confirm-popup {
+  width: min(400px, calc(100vw - 32px));
+  padding: 0;
+  border: 0;
+  border-radius: 12px;
+  background: v.$surface;
+  color: v.$ink;
+  box-shadow: 0 20px 48px rgba(15, 23, 42, 0.2);
+
+  &::backdrop {
+    background: rgba(15, 23, 42, 0.45);
+  }
+
+  .confirm-popup-content {
+    padding: 24px;
+  }
+
+  .confirm-popup-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    svg {
+      color: v.$danger;
+    }
+
+    h2 {
+      font-size: 17px;
+      font-weight: 600;
+    }
+  }
+
+  p {
+    margin: 12px 0 24px;
+    color: v.$sub;
+    font-size: 14px;
+  }
+
+  .confirm-popup-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+}

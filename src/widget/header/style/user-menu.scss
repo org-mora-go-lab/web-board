@@ -1,0 +1,40 @@
+@use "../../../entity/style/variable" as v;
+
+.user-menu {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+
+  .user-menu-provider {
+    flex: 0 0 auto;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: v.$hover;
+    color: v.$sub;
+    font-size: 12px;
+
+    &.is-kakao {
+      background: v.$kakao;
+      color: v.$kakao-ink;
+    }
+
+    &.is-google {
+      background: v.$accent-soft;
+      color: v.$accent;
+    }
+  }
+
+  .user-menu-nickname {
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  @media (max-width: v.$mobile) {
+    .user-menu-provider {
+      display: none;
+    }
+  }
+}

@@ -1,0 +1,20 @@
+@use "../../entity/style/mixin";
+@use "../../entity/ui/status-message";
+@use "../../entity/ui/text-field";
+@use "../../feature/post-form";
+@use "../../widget/header";
+
+.post-write {
+  @include mixin.page-column;
+
+  h1 {
+    margin-bottom: 20px;
+    font-size: 26px;
+    font-weight: 700;
+  }
+
+  .post-write-card {
+    @include mixin.card;
+    padding: 24px;
+  }
+}

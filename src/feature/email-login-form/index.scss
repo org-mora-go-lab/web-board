@@ -1,0 +1,15 @@
+@use "../../entity/style/variable" as v;
+
+.email-login-form {
+  display: grid;
+  gap: 14px;
+
+  .email-login-form-error {
+    color: v.$danger;
+    font-size: 14px;
+  }
+
+  .button {
+    height: 46px;
+  }
+}

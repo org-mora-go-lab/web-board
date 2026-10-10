@@ -1,0 +1,15 @@
+@use "../../entity/style/variable" as v;
+
+.email-signup-form {
+  display: grid;
+  gap: 14px;
+
+  .email-signup-form-error {
+    color: v.$danger;
+    font-size: 14px;
+  }
+
+  .button {
+    height: 46px;
+  }
+}

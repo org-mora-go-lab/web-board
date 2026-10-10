@@ -1,0 +1,44 @@
+@use "../../entity/style/variable" as v;
+@use "./style/user-menu";
+
+.header {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  border-bottom: 1px solid v.$line;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+
+  .header-inner {
+    max-width: v.$content-width;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    margin: 0 auto;
+    padding: 0 20px;
+
+    @media (max-width: v.$mobile) {
+      padding: 0 16px;
+    }
+  }
+
+  .header-logo {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 700;
+
+    svg {
+      color: v.$accent;
+    }
+  }
+
+  .header-nav {
+    min-width: 0;
+    display: flex;
+    justify-content: flex-end;
+  }
+}

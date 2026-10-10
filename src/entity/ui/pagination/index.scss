@@ -1,0 +1,31 @@
+@use "../../style/variable" as v;
+
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: 4px;
+  margin-top: 24px;
+
+  .pagination-page,
+  .pagination-arrow {
+    min-width: 34px;
+    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 8px;
+    border-radius: v.$radius;
+    color: v.$sub;
+    font-size: 14px;
+
+    &:hover {
+      background: v.$hover;
+    }
+  }
+
+  .pagination-page.is-current {
+    background: v.$accent;
+    color: #fff;
+    font-weight: 600;
+  }
+}

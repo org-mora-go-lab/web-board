@@ -1,36 +1,84 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Board
 
-## Getting Started
+카카오·Google(Gmail)·이메일로 가입해 글을 쓰고 읽는 기본 게시판입니다. 상세 요구사항은 [PRD.md](PRD.md)를 참고하세요.
 
-First, run the development server:
+- 게시글 목록(페이지네이션)·검색·작성·상세·수정·삭제
+- 카카오 / Google 소셜 로그인, 이메일 회원가입·로그인
+- 작성자만 수정·삭제 가능, HttpOnly 세션 쿠키 인증
+
+## 기술 스택
+
+| 영역 | 사용 기술 |
+| --- | --- |
+| 프론트엔드 | Next.js 16 App Router, React 19, Zustand, SCSS, lucide-react |
+| 백엔드 | Next.js Route Handler(`/api/**`), SQLite([sql.js](https://sql.js.org) WASM, 네이티브 빌드 불필요) |
+| 테스트 | Playwright (`PRD.md` 요구사항별 화면·API E2E), 카카오·Google 모의 OAuth 서버 |
+
+## 시작하기
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+cp .env.example .env.local   # 소셜 로그인 키 입력 (아래 참고)
+npm run dev                  # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+데이터는 `data/board.db`(`DATABASE_PATH`로 변경 가능)에 자동으로 생성·저장됩니다. 소셜 로그인 키가 없어도 이메일 가입으로 바로 사용할 수 있습니다.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 소셜 로그인 설정
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| 변수 | 발급 위치 |
+| --- | --- |
+| `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET` | [Kakao Developers](https://developers.kakao.com) → 내 애플리케이션 → 앱 키(REST API 키) / 보안(Client Secret) |
+| `GOOGLE_CLIENT_ID`, `GOOGLE_CLIENT_SECRET` | [Google Cloud Console](https://console.cloud.google.com/apis/credentials) → OAuth 클라이언트 ID(웹 애플리케이션) |
 
-## Learn More
+각 콘솔에 아래 Redirect URI를 등록합니다. 배포 환경에서는 도메인을 바꿔 등록하고, 프록시 뒤에서 실행하면 `APP_URL`(예: `https://board.example.com`)을 설정하세요.
 
-To learn more about Next.js, take a look at the following resources:
+- 카카오: `http://localhost:3000/api/auth/oauth/kakao/callback`
+  - 카카오 로그인 활성화, 동의항목에서 `닉네임`(필수)과 `카카오계정(이메일)`(선택)을 설정합니다.
+- Google: `http://localhost:3000/api/auth/oauth/google/callback`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## 스크립트
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+| 명령 | 설명 |
+| --- | --- |
+| `npm run dev` | 개발 서버 |
+| `npm run build` / `npm start` | 프로덕션 빌드 / 실행 |
+| `npm run lint` | ESLint |
+| `npm run test:e2e` | Playwright E2E 전체 실행 |
 
-## Deploy on Vercel
+`npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3100), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오·Google 대신 `tests/__mock__/oauth-server.mjs`(포트 4100)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## API
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+| 메서드 | 경로 | 설명 |
+| --- | --- | --- |
+| `POST` | `/api/auth/signup` | 이메일 회원가입 (자동 로그인) |
+| `POST` | `/api/auth/login` | 이메일 로그인 |
+| `POST` | `/api/auth/logout` | 로그아웃 |
+| `GET` | `/api/auth/me` | 현재 사용자 (`{ user: null }`이면 비로그인) |
+| `GET` | `/api/auth/oauth/{kakao\|google}?next=/path` | 소셜 로그인 시작 |
+| `GET` | `/api/auth/oauth/{kakao\|google}/callback` | 소셜 로그인 콜백 |
+| `GET` | `/api/posts?page=1&size=10&q=검색어` | 게시글 목록 |
+| `POST` | `/api/posts` | 게시글 작성 (로그인 필요) |
+| `GET` | `/api/posts/{id}` | 게시글 상세 |
+| `PATCH` | `/api/posts/{id}` | 게시글 수정 (작성자만) |
+| `DELETE` | `/api/posts/{id}` | 게시글 삭제 (작성자만) |
+
+오류는 `{ "error": { "code": "VALIDATION_ERROR", "message": "...", "fields": { "title": "..." } } }` 형식으로 응답합니다.
+
+## 폴더 구조
+
+```
+app/                    # 라우트 진입점 (src를 re-export만 함)
+  api/**/route.ts       #   → src/server
+  **/page.tsx           #   → src/page
+src/
+  page/                 # 화면 단위 모듈 (home, login, signup, post-detail, post-write, post-edit)
+  widget/               # 여러 화면에서 쓰는 큰 단위 UI (header, post-table, post-article)
+  feature/              # 사용자 동작 단위 UI (social-login, email-*-form, post-form, post-search)
+  entity/               # 공통 타입·API 클라이언트·스토어·검증·UI·스타일
+  server/               # 백엔드 (db, http, user, auth, post)
+tests/
+  NN. 섹션명/NN.e2e.spec.ts   # PRD.md 요구사항과 1:1 대응
+  __mock__/ __util__/ __constant__/
+```

@@ -1,0 +1,14 @@
+@use "../../style/variable" as v;
+
+.status-message {
+  display: grid;
+  justify-items: center;
+  gap: 16px;
+  padding: 64px 16px;
+  color: v.$muted;
+  text-align: center;
+
+  &.is-error {
+    color: v.$danger;
+  }
+}

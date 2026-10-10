@@ -1,0 +1,56 @@
+@use "../../style/variable" as v;
+
+// Form field with `-footer`, `-error` and `-count` parts.
+.text-field {
+  display: grid;
+  gap: 6px;
+
+  label {
+    color: v.$sub;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  input,
+  textarea {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid v.$line-strong;
+    border-radius: v.$radius;
+    background: v.$surface;
+    font-size: 15px;
+    transition: border-color 0.15s;
+
+    &:focus {
+      border-color: v.$accent;
+      outline: 3px solid v.$accent-soft;
+    }
+  }
+
+  textarea {
+    min-height: 280px;
+    resize: vertical;
+    line-height: 1.7;
+  }
+
+  &.has-error input,
+  &.has-error textarea {
+    border-color: v.$danger;
+  }
+
+  .text-field-footer {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    font-size: 13px;
+  }
+
+  .text-field-error {
+    color: v.$danger;
+  }
+
+  .text-field-count {
+    margin-left: auto;
+    color: v.$muted;
+  }
+}

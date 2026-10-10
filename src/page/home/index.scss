@@ -1,0 +1,44 @@
+@use "../../entity/style/variable" as v;
+@use "../../entity/style/mixin";
+@use "../../entity/ui/pagination";
+@use "../../entity/ui/status-message";
+@use "../../feature/post-search";
+@use "../../widget/header";
+@use "../../widget/post-table";
+
+.home {
+  @include mixin.page-column;
+
+  .home-heading {
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    h1 {
+      font-size: 26px;
+      font-weight: 700;
+    }
+  }
+
+  .home-total {
+    color: v.$muted;
+    font-size: 14px;
+  }
+
+  .home-toolbar {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    .post-search {
+      width: min(360px, 100%);
+    }
+  }
+
+  .home-board {
+    @include mixin.card;
+    overflow: hidden;
+  }
+}
