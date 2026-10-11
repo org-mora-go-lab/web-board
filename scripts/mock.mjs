@@ -46,6 +46,9 @@ try {
   const env = {
     ...process.env,
     NODE_ENV: "development",
+    VERCEL: "",
+    TURSO_DATABASE_URL: "",
+    TURSO_AUTH_TOKEN: "",
     APP_URL: appUrl,
     DATABASE_PATH: process.env.MOCK_DATABASE_PATH || "data/mock.db",
     NEXT_DIST_DIR: process.env.MOCK_DIST_DIR || ".next-mock",

@@ -40,7 +40,9 @@
     ".next-e2e-mock/types/**/*.ts",
     ".next-e2e-mock/dev/types/**/*.ts",
     ".next-mock/types/**/*.ts",
-    ".next-mock/dev/types/**/*.ts"
+    ".next-mock/dev/types/**/*.ts",
+    ".next-e2e-turso/types/**/*.ts",
+    ".next-e2e-turso/dev/types/**/*.ts"
   ],
   "exclude": [
     "node_modules"

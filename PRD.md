@@ -4,11 +4,13 @@
 
 01. Next.js App Router 기반의 게시판 웹 앱이며, `/`에 접속하면 `Board` 문서 제목과 `게시판` 목록 화면을 표시한다.
 
-02. 백엔드는 Next.js Route Handler로 `/api/**` JSON API를 제공하고 데이터는 서버의 SQLite(sql.js) 파일 데이터베이스에 저장한다. API 오류는 `{ error: { code, message } }` 형식으로 응답한다.
+02. 백엔드는 Next.js Route Handler로 `/api/**` JSON API를 제공하고 DB 접근은 비동기 libSQL 클라이언트를 사용한다. `TURSO_DATABASE_URL`이 없는 로컬 환경에서는 SQLite 파일(`DATABASE_PATH`, 기본 `data/board.db`)에 저장한다. API 오류는 `{ error: { code, message } }` 형식으로 응답한다.
 
 03. 모든 화면 상단 헤더에 `Board` 로고를 표시하며, 로고를 누르면 목록 화면(`/`)으로 이동한다.
 
 04. `npm run mock`은 실제 소셜 로그인 키 없이 앱(`http://localhost:3200`)과 모의 OAuth 서버(4200)를 함께 실행한다. 로그인 화면에서 카카오 또는 Google을 선택하면 기본 계정 ID(`mock-kakao-user` 또는 `mock-google-user`), 닉네임(`Mock User`), 이메일(`mock-kakao@example.com` 또는 `mock-google@example.com`)이 입력된 인가 화면을 표시하고 동의 시 해당 계정으로 로그인한다. 일반 개발 환경과 분리된 DB(`data/mock.db`)와 빌드 폴더(`.next-mock`)를 사용하고 재실행해도 데이터를 유지한다. 기존 세션 인증과 작성자 권한으로 게시글 작성·목록·상세 조회·수정·삭제 및 로그아웃을 사용할 수 있다. `MOCK_APP_PORT`, `MOCK_OAUTH_PORT`, `MOCK_DATABASE_PATH`, `MOCK_DIST_DIR`로 실행 환경을 변경할 수 있고 실행 종료 시 두 서버를 함께 종료한다.
+
+05. `TURSO_DATABASE_URL`과 `TURSO_AUTH_TOKEN`을 설정하면 회원·계정·세션·게시글을 외부 Turso/libSQL DB에 저장하고 로컬 DB 디렉터리를 생성하거나 파일에 쓰지 않는다. 원격 URL은 `libsql://` 또는 `https://`를 사용하며 토큰이 필수다. Vercel에서는 두 환경변수가 필수이며 누락 시 로컬 파일 DB로 대체하지 않고 서버 오류를 반환한다. 사용자와 계정 생성은 전용 쓰기 트랜잭션으로 원자적으로 처리하고 실패 시 롤백한다. Mock 및 로컬 E2E 환경은 원격 DB 설정을 상속하지 않는다.
 
 <br>
 

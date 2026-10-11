@@ -26,6 +26,7 @@ const eslintConfig = defineConfig([
     ".next-e2e/**",
     ".next-mock/**",
     ".next-e2e-mock/**",
+    ".next-e2e-turso/**",
     "test-results/**",
     "playwright-report/**",
   ]),

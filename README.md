@@ -11,7 +11,7 @@
 | 영역 | 사용 기술 |
 | --- | --- |
 | 프론트엔드 | Next.js 16 App Router, React 19, Zustand, SCSS, lucide-react |
-| 백엔드 | Next.js Route Handler(`/api/**`), SQLite([sql.js](https://sql.js.org) WASM, 네이티브 빌드 불필요) |
+| 백엔드 | Next.js Route Handler(`/api/**`), 비동기 [libSQL 클라이언트](https://docs.turso.tech/sdk/ts/reference), 로컬 SQLite / 원격 Turso |
 | 테스트 | Playwright (`PRD.md` 요구사항별 화면·API E2E), 카카오·Google 모의 OAuth 서버 |
 
 ## 시작하기
@@ -22,9 +22,31 @@ cp .env.example .env.local   # 소셜 로그인 키 입력 (아래 참고)
 npm run dev                  # http://localhost:3000
 ```
 
-데이터는 `data/board.db`(`DATABASE_PATH`로 변경 가능)에 자동으로 생성·저장됩니다. 소셜 로그인 키가 없어도 이메일 가입으로 바로 사용할 수 있습니다.
+`TURSO_DATABASE_URL`을 설정하지 않은 로컬 환경에서는 데이터가 `data/board.db`(`DATABASE_PATH`로 변경 가능)에 자동으로 생성·저장됩니다. 기존 SQLite 파일도 그대로 사용할 수 있습니다. 소셜 로그인 키가 없어도 이메일 가입으로 바로 사용할 수 있습니다.
+
+### Vercel 배포
+
+Vercel Functions의 배포 경로(`/var/task`)에는 DB 파일을 저장할 수 없습니다. `/tmp`도 인스턴스 간 공유되지 않는 임시 저장소이므로 운영 DB로 사용하지 않습니다. Vercel에서는 외부 Turso DB를 사용합니다.
+
+1. [Turso](https://turso.tech)에서 DB를 생성하고 연결 URL과 인증 토큰을 발급합니다.
+2. Vercel 프로젝트의 Settings > Environment Variables에서 다음 값을 설정합니다. Production과 사용하는 Preview 환경 모두에 적용하세요.
+
+| 변수 | 값 |
+| --- | --- |
+| `TURSO_DATABASE_URL` | 발급받은 `libsql://...turso.io` URL (`https://`도 지원) |
+| `TURSO_AUTH_TOKEN` | 발급받은 DB 인증 토큰, 서버 전용 비밀 값 |
+| `APP_URL` | `https://web-board-alpha.vercel.app` 등 실제 앱 주소 |
+
+3. 소셜 로그인 키와 각 공급자의 Redirect URI도 배포 도메인으로 설정합니다.
+4. 변경 코드를 배포하고 환경변수 적용 후 재배포합니다. `/api/posts`가 200으로 응답하고 회원가입·로그인·게시글 저장이 정상인지 확인합니다.
+
+원격 설정이 있으면 `DATABASE_PATH`는 사용하지 않고 로컬 파일 쓰기도 실행하지 않습니다. Vercel에서 URL 또는 토큰이 누락되면 로컬 DB로 대체하지 않으며 Functions 로그에 설정 오류를 기록합니다. URL이 있는 로컬 환경에서도 토큰은 필수입니다. `NEXT_PUBLIC_` 접두사를 붙이거나 인증 토큰을 커밋하지 마세요.
+
+빈 Turso DB에는 최초 API 연결 시 테이블과 인덱스가 자동 생성됩니다. 로컬 파일의 기존 데이터가 원격 DB로 자동 복사되지는 않습니다. 기존 데이터를 유지하려면 파일을 백업하고 Turso의 DB import 절차로 별도 이전한 뒤 연결하세요.
 
 ### Mock 환경
+
+Mock 실행은 Turso 및 Vercel 환경변수를 무시하고 분리된 로컬 DB만 사용합니다.
 
 ```bash
 npm run mock                 # http://localhost:3200
@@ -60,6 +82,8 @@ npm run mock                 # http://localhost:3200
 `npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3100), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오·Google 대신 `tests/__mock__/oauth-server.mjs`(포트 4100)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
 
 mock 실행 요구사항은 `npm run mock`으로 별도 앱(3300), OAuth 서버(4300), DB(`data/e2e-mock.db`), 빌드 폴더(`.next-e2e-mock`)를 실행해 검증하므로 사용자용 mock 데이터와도 분리됩니다.
+
+원격 DB 요구사항은 별도 앱(3400, `.next-e2e-turso`)을 Vercel 환경변수와 쓰기 불가능한 로컬 DB 경로로 실행합니다. `tests/__mock__/libsql-server.mjs`(4400)는 인증 토큰을 검증하는 Hrana HTTP v2 모의 서버이며 공식 libSQL 클라이언트로 `data/e2e-turso.db`에 저장합니다. 실제 Turso에 접근하지 않고 회원·세션·게시글 저장을 검증합니다. 로컬 E2E와 Mock은 개발용 Turso 환경변수를 상속하지 않습니다.
 
 ## API
 
