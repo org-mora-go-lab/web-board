@@ -8,6 +8,8 @@
 
 03. 모든 화면 상단 헤더에 `Board` 로고를 표시하며, 로고를 누르면 목록 화면(`/`)으로 이동한다.
 
+04. `npm run mock`은 실제 소셜 로그인 키 없이 앱(`http://localhost:3200`)과 모의 OAuth 서버(4200)를 함께 실행한다. 로그인 화면에서 카카오 또는 Google을 선택하면 기본 계정 ID(`mock-kakao-user` 또는 `mock-google-user`), 닉네임(`Mock User`), 이메일(`mock-kakao@example.com` 또는 `mock-google@example.com`)이 입력된 인가 화면을 표시하고 동의 시 해당 계정으로 로그인한다. 일반 개발 환경과 분리된 DB(`data/mock.db`)와 빌드 폴더(`.next-mock`)를 사용하고 재실행해도 데이터를 유지한다. 기존 세션 인증과 작성자 권한으로 게시글 작성·목록·상세 조회·수정·삭제 및 로그아웃을 사용할 수 있다. `MOCK_APP_PORT`, `MOCK_OAUTH_PORT`, `MOCK_DATABASE_PATH`, `MOCK_DIST_DIR`로 실행 환경을 변경할 수 있고 실행 종료 시 두 서버를 함께 종료한다.
+
 <br>
 
 ## 02. 회원가입 - 카카오

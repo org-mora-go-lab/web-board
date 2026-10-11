@@ -38,6 +38,7 @@ const redirect = (response, url) => {
 };
 
 function authorizePage(provider, query) {
+  const defaultAccount = process.env.MOCK_DEFAULT_ACCOUNT === "1";
   const hidden = ["client_id", "redirect_uri", "state", "scope"]
     .map((name) => `<input type="hidden" name="${name}" value="${escapeHtml(query.get(name))}">`)
     .join("");
@@ -46,9 +47,9 @@ function authorizePage(provider, query) {
 <h1>${title} 로그인</h1>
 <form method="post" action="/${provider}/approve">
   ${hidden}
-  <label>계정 ID <input name="id" required></label>
-  <label>닉네임 <input name="nickname"></label>
-  <label>이메일 <input name="email"></label>
+  <label>계정 ID <input name="id" value="${defaultAccount ? `mock-${provider}-user` : ""}" required></label>
+  <label>닉네임 <input name="nickname" value="${defaultAccount ? "Mock User" : ""}"></label>
+  <label>이메일 <input name="email" value="${defaultAccount ? `mock-${provider}@example.com` : ""}"></label>
   <button type="submit" name="decision" value="approve">동의하고 계속하기</button>
   <button type="submit" name="decision" value="deny">취소</button>
 </form></body></html>`;

@@ -1,6 +1,13 @@
 import { defineConfig, devices } from "@playwright/test";
 
-import { APP_PORT, BASE_URL, E2E_DATABASE_PATH, MOCK_OAUTH_PORT, MOCK_OAUTH_URL } from "./tests/__constant__";
+import {
+  APP_PORT,
+  BASE_URL,
+  E2E_DATABASE_PATH,
+  MOCK_APP_BASE_URL,
+  MOCK_OAUTH_PORT,
+  MOCK_OAUTH_URL,
+} from "./tests/__constant__";
 import { mockOAuthEnv } from "./tests/__mock__";
 
 export default defineConfig({
@@ -32,6 +39,18 @@ export default defineConfig({
       url: BASE_URL,
       env: { DATABASE_PATH: E2E_DATABASE_PATH, NEXT_DIST_DIR: ".next-e2e", ...mockOAuthEnv() },
       reuseExistingServer: !process.env.CI,
+      timeout: 120_000,
+    },
+    {
+      command: "npm run mock",
+      url: MOCK_APP_BASE_URL,
+      env: {
+        MOCK_APP_PORT: "3300",
+        MOCK_OAUTH_PORT: "4300",
+        MOCK_DATABASE_PATH: "data/e2e-mock.db",
+        MOCK_DIST_DIR: ".next-e2e-mock",
+      },
+      reuseExistingServer: false,
       timeout: 120_000,
     },
   ],

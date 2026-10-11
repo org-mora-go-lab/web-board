@@ -37,5 +37,7 @@ next-env.d.ts
 # Local database and E2E artifacts
 /data/
 /.next-e2e/
+/.next-mock/
+/.next-e2e-mock/
 /test-results/
 /playwright-report/

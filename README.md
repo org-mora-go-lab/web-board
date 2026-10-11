@@ -24,6 +24,16 @@ npm run dev                  # http://localhost:3000
 
 데이터는 `data/board.db`(`DATABASE_PATH`로 변경 가능)에 자동으로 생성·저장됩니다. 소셜 로그인 키가 없어도 이메일 가입으로 바로 사용할 수 있습니다.
 
+### Mock 환경
+
+```bash
+npm run mock                 # http://localhost:3200
+```
+
+실제 소셜 로그인 키나 `.env.local` 설정 없이 사용할 수 있습니다. 로그인 화면에서 `카카오로 시작하기` 또는 `Google로 시작하기`를 누른 뒤, 기본값이 채워진 mock 인가 화면에서 `동의하고 계속하기`를 선택하면 `Mock User`로 로그인합니다. 계정 ID는 `mock-kakao-user` / `mock-google-user`이며 서로 다른 계정입니다. 인가 화면의 값을 변경하면 다른 mock 사용자로 로그인할 수도 있습니다.
+
+게시글 작성·조회·수정·삭제는 실제 API와 세션 인증으로 동작합니다. 데이터는 개발 DB와 분리된 `data/mock.db`에 저장되고 재실행해도 유지됩니다. 빌드 폴더는 `.next-mock`, OAuth 서버 포트는 4200이며 Ctrl+C로 두 서버를 함께 종료합니다. 포트가 사용 중이면 오류를 표시하며, `MOCK_APP_PORT`, `MOCK_OAUTH_PORT`, `MOCK_DATABASE_PATH`, `MOCK_DIST_DIR`로 기본값을 변경할 수 있습니다.
+
 ### 소셜 로그인 설정
 
 | 변수 | 발급 위치 |
@@ -42,11 +52,14 @@ npm run dev                  # http://localhost:3000
 | 명령 | 설명 |
 | --- | --- |
 | `npm run dev` | 개발 서버 |
+| `npm run mock` | 기본 mock 사용자로 로그인 가능한 별도 개발 환경 |
 | `npm run build` / `npm start` | 프로덕션 빌드 / 실행 |
 | `npm run lint` | ESLint |
 | `npm run test:e2e` | Playwright E2E 전체 실행 |
 
 `npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3100), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오·Google 대신 `tests/__mock__/oauth-server.mjs`(포트 4100)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
+
+mock 실행 요구사항은 `npm run mock`으로 별도 앱(3300), OAuth 서버(4300), DB(`data/e2e-mock.db`), 빌드 폴더(`.next-e2e-mock`)를 실행해 검증하므로 사용자용 mock 데이터와도 분리됩니다.
 
 ## API
 
