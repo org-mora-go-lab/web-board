@@ -44,8 +44,8 @@ export async function listPosts({ page, size, query }: { page: number; size: num
   const db = await getDb();
   const where = query ? "WHERE posts.title LIKE ? ESCAPE '\\' OR posts.content LIKE ? ESCAPE '\\'" : "";
   const params = query ? [toLikePattern(query), toLikePattern(query)] : [];
-  const { total } = db.get<{ total: number }>(`SELECT COUNT(*) AS total FROM posts ${where}`, params)!;
-  const rows = db.all<PostRow>(`${SELECT_SUMMARY} ${where} ORDER BY posts.id DESC LIMIT ? OFFSET ?`, [
+  const { total } = (await db.get<{ total: number }>(`SELECT COUNT(*) AS total FROM posts ${where}`, params))!;
+  const rows = await db.all<PostRow>(`${SELECT_SUMMARY} ${where} ORDER BY posts.id DESC LIMIT ? OFFSET ?`, [
     ...params,
     size,
     (page - 1) * size,
@@ -55,7 +55,7 @@ export async function listPosts({ page, size, query }: { page: number; size: num
 
 export async function findPost(id: number): Promise<PostDto | null> {
   const db = await getDb();
-  const row = db.get<PostRow>(
+  const row = await db.get<PostRow>(
     `SELECT posts.id, posts.title, posts.content, posts.author_id, posts.created_at, posts.updated_at,
             users.nickname AS author_nickname
        FROM posts JOIN users ON users.id = posts.author_id
@@ -68,7 +68,7 @@ export async function findPost(id: number): Promise<PostDto | null> {
 export async function insertPost(authorId: number, input: PostInput) {
   const db = await getDb();
   const now = new Date().toISOString();
-  const { lastInsertId } = db.run(
+  const { lastInsertId } = await db.run(
     "INSERT INTO posts (author_id, title, content, created_at, updated_at) VALUES (?, ?, ?, ?, ?)",
     [authorId, input.title, input.content, now, now],
   );
@@ -77,7 +77,7 @@ export async function insertPost(authorId: number, input: PostInput) {
 
 export async function updatePost(id: number, input: PostInput) {
   const db = await getDb();
-  db.run("UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?", [
+  await db.run("UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?", [
     input.title,
     input.content,
     new Date().toISOString(),
@@ -88,5 +88,5 @@ export async function updatePost(id: number, input: PostInput) {
 
 export async function deletePost(id: number) {
   const db = await getDb();
-  db.run("DELETE FROM posts WHERE id = ?", [id]);
+  await db.run("DELETE FROM posts WHERE id = ?", [id]);
 }

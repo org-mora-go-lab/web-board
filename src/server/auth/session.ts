@@ -17,14 +17,14 @@ export const isSecureRequest = (request: NextRequest) => request.nextUrl.protoco
 
 export async function deleteSession(token: string) {
   const db = await getDb();
-  db.run("DELETE FROM sessions WHERE token_hash = ?", [hashToken(token)]);
+  await db.run("DELETE FROM sessions WHERE token_hash = ?", [hashToken(token)]);
 }
 
 export async function getSessionUser(request: NextRequest): Promise<UserDto | null> {
   const token = request.cookies.get(SESSION_COOKIE)?.value;
   if (!token) return null;
   const db = await getDb();
-  const session = db.get<{ user_id: number; expires_at: string }>(
+  const session = await db.get<{ user_id: number; expires_at: string }>(
     "SELECT user_id, expires_at FROM sessions WHERE token_hash = ?",
     [hashToken(token)],
   );
@@ -50,7 +50,7 @@ export async function signIn(request: NextRequest, response: NextResponse, user:
   const db = await getDb();
   const token = randomBytes(32).toString("base64url");
   const expires = new Date(Date.now() + SESSION_TTL_MS);
-  db.run("INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [
+  await db.run("INSERT INTO sessions (token_hash, user_id, expires_at) VALUES (?, ?, ?)", [
     hashToken(token),
     user.id,
     expires.toISOString(),

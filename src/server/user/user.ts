@@ -31,7 +31,7 @@ type NewUser = {
 
 export async function findUserById(id: number): Promise<UserDto | null> {
   const db = await getDb();
-  const row = db.get<UserRow>(
+  const row = await db.get<UserRow>(
     `SELECT users.id, users.nickname, users.email, accounts.provider
        FROM users JOIN accounts ON accounts.user_id = users.id
       WHERE users.id = ?
@@ -43,7 +43,7 @@ export async function findUserById(id: number): Promise<UserDto | null> {
 
 export async function findAccount(provider: AuthProvider, providerAccountId: string) {
   const db = await getDb();
-  const row = db.get<AccountRow>(
+  const row = await db.get<AccountRow>(
     "SELECT user_id, password_hash FROM accounts WHERE provider = ? AND provider_account_id = ?",
     [provider, providerAccountId],
   );
@@ -53,12 +53,12 @@ export async function findAccount(provider: AuthProvider, providerAccountId: str
 export async function createUser(user: NewUser): Promise<UserDto> {
   const db = await getDb();
   const now = new Date().toISOString();
-  const userId = db.transaction(() => {
-    const { lastInsertId } = db.run(
+  const userId = await db.transaction(async (transaction) => {
+    const { lastInsertId } = await transaction.run(
       "INSERT INTO users (nickname, email, created_at) VALUES (?, ?, ?)",
       [user.nickname, user.email, now],
     );
-    db.run(
+    await transaction.run(
       `INSERT INTO accounts (user_id, provider, provider_account_id, password_hash, created_at)
        VALUES (?, ?, ?, ?, ?)`,
       [lastInsertId, user.provider, user.providerAccountId, user.passwordHash ?? null, now],
