@@ -13,5 +13,5 @@ export const loginWithEmail = (input: LoginInput) =>
 
 export const logoutRequest = () => apiRequest<void>("/api/auth/logout", { method: "POST" });
 
-export const oauthStartUrl = (provider: "kakao" | "google", next: string) =>
+export const oauthStartUrl = (provider: "kakao", next: string) =>
   `/api/auth/oauth/${provider}${next === "/" ? "" : `?next=${encodeURIComponent(next)}`}`;

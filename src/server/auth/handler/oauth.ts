@@ -22,7 +22,7 @@ const STATE_COOKIE = "board_oauth_state";
 const NEXT_COOKIE = "board_oauth_next";
 const OAUTH_COOKIE_PATH = "/api/auth/oauth";
 const OAUTH_COOKIE_MAX_AGE = 10 * 60;
-const DEFAULT_NICKNAMES = { kakao: "카카오 사용자", google: "Google 사용자" };
+const DEFAULT_NICKNAMES = { kakao: "카카오 사용자" };
 
 const appOrigin = (request: NextRequest) => new URL(process.env.APP_URL || request.nextUrl.origin).origin;
 const callbackUrl = (request: NextRequest, provider: OAuthProvider) =>
@@ -62,7 +62,7 @@ export const startOAuth = handle(async (request, context: Context) => {
     path: OAUTH_COOKIE_PATH,
     maxAge: OAUTH_COOKIE_MAX_AGE,
   };
-  // The provider is part of the state so a Kakao state can never complete a Google callback.
+  // Bind the state to the provider so it can only complete the matching callback.
   response.cookies.set(STATE_COOKIE, `${provider.id}.${state}`, cookieOptions);
   response.cookies.set(NEXT_COOKIE, next, cookieOptions);
   return response;
@@ -93,7 +93,7 @@ export const finishOAuth = handle(async (request, context: Context) => {
   const existingUser = await findOAuthUser(provider.id, profile.id);
   const nickname = profile.nickname.trim().slice(0, NICKNAME_MAX_LENGTH);
   let user = existingUser ?? (await createOAuthUser(provider, profile));
-  if (existingUser && provider.id === "kakao" && nickname && nickname !== existingUser.nickname) {
+  if (existingUser && nickname && nickname !== existingUser.nickname) {
     await updateUserNickname(existingUser.id, nickname);
     user = { ...existingUser, nickname };
   }

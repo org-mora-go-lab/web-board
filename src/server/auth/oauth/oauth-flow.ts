@@ -1,8 +1,7 @@
-import { googleProvider } from "./google";
 import { kakaoProvider } from "./kakao";
 import type { OAuthProfile, OAuthProvider } from "./oauth-provider";
 
-const PROVIDERS = { kakao: kakaoProvider, google: googleProvider };
+const PROVIDERS = { kakao: kakaoProvider };
 
 export function getOAuthProvider(id: string): OAuthProvider | null {
   return Object.hasOwn(PROVIDERS, id) ? PROVIDERS[id as keyof typeof PROVIDERS]() : null;

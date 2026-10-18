@@ -1,4 +1,4 @@
-export type AuthProvider = "email" | "kakao" | "google";
+export type AuthProvider = "email" | "kakao";
 
 export type User = {
   id: number;

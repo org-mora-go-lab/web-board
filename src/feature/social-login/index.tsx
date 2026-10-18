@@ -11,7 +11,6 @@ export function SocialLogin({ next }: Props) {
   return (
     <div className="social-login">
       <ProviderButton provider="kakao" href={oauthStartUrl("kakao", next)} />
-      <ProviderButton provider="google" href={oauthStartUrl("google", next)} />
     </div>
   );
 }

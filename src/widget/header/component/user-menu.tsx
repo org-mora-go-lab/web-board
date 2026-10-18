@@ -9,7 +9,7 @@ type Props = {
   onLogout: () => void;
 };
 
-const PROVIDER_LABELS = { email: "이메일", kakao: "카카오", google: "Google" };
+const PROVIDER_LABELS = { email: "이메일", kakao: "카카오" };
 
 export function UserMenu({ user, onLogout }: Props) {
   return (

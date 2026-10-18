@@ -55,7 +55,7 @@ try {
     MOCK_OAUTH_PORT: String(oauthPort),
     MOCK_DEFAULT_ACCOUNT: "1",
   };
-  for (const provider of ["kakao", "google"]) {
+  for (const provider of ["kakao"]) {
     const prefix = provider.toUpperCase();
     env[`${prefix}_CLIENT_ID`] = `mock-${provider}-client`;
     env[`${prefix}_CLIENT_SECRET`] = `mock-${provider}-secret`;

@@ -1,11 +1,11 @@
 import { MOCK_OAUTH_URL } from "../__constant__";
 
-export const MOCK_CLIENT_IDS = { kakao: "mock-kakao-client", google: "mock-google-client" } as const;
+export const MOCK_CLIENT_IDS = { kakao: "mock-kakao-client" } as const;
 
-// Points the app's Kakao and Google endpoints at `oauth-server.mjs`.
+// Points the app's Kakao endpoints at `oauth-server.mjs`.
 export function mockOAuthEnv() {
   return Object.fromEntries(
-    (["kakao", "google"] as const).flatMap((provider) => {
+    (["kakao"] as const).flatMap((provider) => {
       const prefix = provider.toUpperCase();
       return [
         [`${prefix}_CLIENT_ID`, MOCK_CLIENT_IDS[provider]],

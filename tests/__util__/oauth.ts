@@ -3,17 +3,17 @@ import { expect, type Page } from "@playwright/test";
 import { MOCK_OAUTH_URL } from "../__constant__";
 import { uniqueId } from "./unique";
 
-export type Provider = "kakao" | "google";
+export type Provider = "kakao";
 export type OAuthAccount = { id: string; nickname: string; email: string };
 
-const BUTTON_LABELS: Record<Provider, string> = { kakao: "카카오로 시작하기", google: "Google로 시작하기" };
+const BUTTON_LABELS: Record<Provider, string> = { kakao: "카카오로 시작하기" };
 
 export function newOAuthAccount(provider: Provider): OAuthAccount {
   const id = uniqueId(provider);
   return {
     id,
-    nickname: provider === "kakao" ? `카카오${id}`.slice(0, 20) : `Google ${id}`.slice(0, 20),
-    email: provider === "kakao" ? `${id}@kakao.example` : `${id}@gmail.com`,
+    nickname: `카카오${id}`.slice(0, 20),
+    email: `${id}@kakao.example`,
   };
 }
 

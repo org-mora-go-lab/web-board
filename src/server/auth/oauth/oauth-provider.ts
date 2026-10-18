@@ -1,4 +1,4 @@
-export type OAuthProviderId = "kakao" | "google";
+export type OAuthProviderId = "kakao";
 
 export type OAuthProfile = {
   id: string;

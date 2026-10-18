@@ -24,7 +24,7 @@ export function Login({ next, errorCode }: Props) {
       <main className="login">
         <section className="login-card">
           <h1>로그인</h1>
-          <p className="login-description">카카오, Google 또는 이메일로 시작하세요.</p>
+          <p className="login-description">카카오 또는 이메일로 시작하세요.</p>
           {errorMessage && (
             <p className="login-alert" role="alert">
               {errorMessage}

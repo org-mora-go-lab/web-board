@@ -5,7 +5,7 @@ import type { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: { default: "Board", template: "%s | Board" },
-  description: "카카오·Google·이메일로 가입해 글을 나누는 게시판",
+  description: "카카오·이메일로 가입해 글을 나누는 게시판",
   icons: { icon: "/favicon.ico" },
 };
 

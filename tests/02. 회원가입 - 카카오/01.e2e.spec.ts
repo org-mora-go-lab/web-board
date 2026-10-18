@@ -7,5 +7,6 @@ test("1. 로그인 화면과 회원가입 화면에 카카오로 시작하기 �
     await page.goto(path);
     await expect(providerButton(page, "kakao")).toBeVisible();
     await expect(providerButton(page, "kakao")).toHaveAttribute("href", "/api/auth/oauth/kakao");
+    await expect(page.getByRole("link", { name: "Google로 시작하기" })).toHaveCount(0);
   }
 });

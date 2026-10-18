@@ -1,6 +1,6 @@
 import { getDb } from "../db";
 
-export type AuthProvider = "email" | "kakao" | "google";
+export type AuthProvider = "email" | "kakao";
 
 export type UserDto = {
   id: number;

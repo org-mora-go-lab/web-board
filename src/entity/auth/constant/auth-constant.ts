@@ -4,7 +4,7 @@ export const NICKNAME_MIN_LENGTH = 2;
 export const NICKNAME_MAX_LENGTH = 20;
 export const EMAIL_PATTERN = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-export const OAUTH_PROVIDERS = ["kakao", "google"] as const;
+export const OAUTH_PROVIDERS = ["kakao"] as const;
 
 // Messages for the `?error=` codes the OAuth callback redirects to /login with.
 export const LOGIN_ERROR_MESSAGES: Record<string, string> = {

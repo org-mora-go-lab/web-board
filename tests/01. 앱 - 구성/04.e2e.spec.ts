@@ -7,9 +7,9 @@ test.use({ baseURL: MOCK_APP_BASE_URL });
 test.setTimeout(90_000);
 
 test("4. mock 명령으로 실행한 환경에서 기본 mock 계정으로 로그인하고 게시글 CRUD와 로그아웃을 사용할 수 있다", async ({ page }) => {
-  for (const provider of ["kakao", "google"] as const) {
+  for (const provider of ["kakao"] as const) {
     await page.goto("/login");
-    await page.getByRole("link", { name: provider === "kakao" ? "카카오로 시작하기" : "Google로 시작하기" }).click();
+    await page.getByRole("link", { name: "카카오로 시작하기" }).click();
     await page.waitForURL(`${MOCK_APP_OAUTH_URL}/${provider}/authorize?**`);
     await expect(page.getByLabel("계정 ID")).toHaveValue(`mock-${provider}-user`);
     await expect(page.getByLabel("닉네임")).toHaveValue("Mock User");
