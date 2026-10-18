@@ -6,7 +6,7 @@ import { NICKNAME_MAX_LENGTH } from "@/src/entity/auth/constant";
 import { toSafeNextPath } from "@/src/entity/auth/util";
 
 import { handle, HttpError } from "../../http";
-import { createUser, findAccount, findUserById } from "../../user";
+import { createUser, findAccount, findUserById, updateUserNickname } from "../../user";
 import {
   buildAuthorizeUrl,
   fetchOAuthProfile,
@@ -90,7 +90,13 @@ export const finishOAuth = handle(async (request, context: Context) => {
     return redirectToLogin(request, "oauth_failed", next);
   }
 
-  const user = (await findOAuthUser(provider.id, profile.id)) ?? (await createOAuthUser(provider, profile));
+  const existingUser = await findOAuthUser(provider.id, profile.id);
+  const nickname = profile.nickname.trim().slice(0, NICKNAME_MAX_LENGTH);
+  let user = existingUser ?? (await createOAuthUser(provider, profile));
+  if (existingUser && provider.id === "kakao" && nickname && nickname !== existingUser.nickname) {
+    await updateUserNickname(existingUser.id, nickname);
+    user = { ...existingUser, nickname };
+  }
   return signIn(request, redirectTo(request, next), user);
 });
 

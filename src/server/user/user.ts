@@ -50,6 +50,11 @@ export async function findAccount(provider: AuthProvider, providerAccountId: str
   return row ? { userId: row.user_id, passwordHash: row.password_hash } : null;
 }
 
+export async function updateUserNickname(id: number, nickname: string): Promise<void> {
+  const db = await getDb();
+  await db.run("UPDATE users SET nickname = ? WHERE id = ?", [nickname, id]);
+}
+
 export async function createUser(user: NewUser): Promise<UserDto> {
   const db = await getDb();
   const now = new Date().toISOString();

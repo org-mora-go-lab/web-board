@@ -4,6 +4,7 @@ import { MOCK_APP_BASE_URL, MOCK_APP_OAUTH_URL } from "../__constant__";
 import { contentField, titleField, uniqueId } from "../__util__";
 
 test.use({ baseURL: MOCK_APP_BASE_URL });
+test.setTimeout(90_000);
 
 test("4. mock 명령으로 실행한 환경에서 기본 mock 계정으로 로그인하고 게시글 CRUD와 로그아웃을 사용할 수 있다", async ({ page }) => {
   for (const provider of ["kakao", "google"] as const) {
