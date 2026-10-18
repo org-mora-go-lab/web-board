@@ -1,0 +1,57 @@
+name: Create next version branch
+
+on:
+  pull_request:
+    branches: [main]
+    types: [closed]
+
+permissions:
+  contents: write
+
+concurrency:
+  group: create-next-version-branch
+  cancel-in-progress: false
+
+jobs:
+  create-version-branch:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out merged main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Calculate next patch version
+        id: version
+        shell: bash
+        run: |
+          node <<'NODE'
+          const fs = require("node:fs");
+          const packageJson = JSON.parse(fs.readFileSync("package.json", "utf8"));
+          const match = /^(\d+)\.(\d+)\.(\d+)$/.exec(packageJson.version);
+          if (!match) throw new Error(`Unsupported package version: ${packageJson.version}`);
+
+          const nextVersion = `${match[1]}.${match[2]}.${Number(match[3]) + 1}`;
+          packageJson.version = nextVersion;
+          fs.writeFileSync("package.json", `${JSON.stringify(packageJson, null, 2)}\n`);
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `version=${nextVersion}\n`);
+          NODE
+
+      - name: Create and push version branch
+        env:
+          NEXT_VERSION: ${{ steps.version.outputs.version }}
+        shell: bash
+        run: |
+          if git ls-remote --exit-code --heads origin "$NEXT_VERSION" >/dev/null 2>&1; then
+            echo "Branch $NEXT_VERSION already exists; nothing to do."
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$NEXT_VERSION"
+          git add package.json
+          git commit -m "feat: $NEXT_VERSION"
+          git push origin "$NEXT_VERSION"
