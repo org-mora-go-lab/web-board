@@ -24,7 +24,7 @@ const OAUTH_COOKIE_PATH = "/api/auth/oauth";
 const OAUTH_COOKIE_MAX_AGE = 10 * 60;
 const DEFAULT_NICKNAMES = { kakao: "카카오 사용자", google: "Google 사용자" };
 
-const appOrigin = (request: NextRequest) => process.env.APP_URL || request.nextUrl.origin;
+const appOrigin = (request: NextRequest) => new URL(process.env.APP_URL || request.nextUrl.origin).origin;
 const callbackUrl = (request: NextRequest, provider: OAuthProvider) =>
   `${appOrigin(request)}/api/auth/oauth/${provider.id}/callback`;
 

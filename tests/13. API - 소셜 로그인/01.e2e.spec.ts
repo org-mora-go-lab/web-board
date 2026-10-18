@@ -1,6 +1,6 @@
 import { expect, test } from "@playwright/test";
 
-import { MOCK_OAUTH_URL } from "../__constant__";
+import { BASE_URL, MOCK_OAUTH_URL } from "../__constant__";
 import { readSetCookie } from "../__util__";
 import { startOAuthByApi } from "./__util__";
 
@@ -10,6 +10,9 @@ test("1. GET /api/auth/oauth/{provider}는 인가 URL로 302 리다이렉트하�
   for (const provider of ["kakao", "google"] as const) {
     const { response, authorizeUrl, state } = await startOAuthByApi(request, provider);
     expect(`${authorizeUrl.origin}${authorizeUrl.pathname}`).toBe(`${MOCK_OAUTH_URL}/${provider}/authorize`);
+    expect(authorizeUrl.searchParams.get("redirect_uri")).toBe(
+      `${BASE_URL}/api/auth/oauth/${provider}/callback`,
+    );
     const cookie = readSetCookie(response, "board_oauth_state");
     expect(cookie).toContain(`board_oauth_state=${provider}.${state};`);
     expect(cookie).toContain("HttpOnly");

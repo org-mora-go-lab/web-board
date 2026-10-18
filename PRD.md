@@ -150,7 +150,7 @@
 
 ## 13. API - 소셜 로그인
 
-01. `GET /api/auth/oauth/{kakao|google}`는 공급자 인가 URL로 302 리다이렉트하고 `state`를 HttpOnly 쿠키에 저장한다. 지원하지 않는 공급자는 404 `NOT_FOUND`를 반환한다.
+01. `GET /api/auth/oauth/{kakao|google}`는 공급자 인가 URL로 302 리다이렉트하고 `state`를 HttpOnly 쿠키에 저장한다. `APP_URL` 끝에 `/`가 있어도 배포 도메인 기준의 단일 `/api/auth/oauth/{provider}/callback`을 Redirect URI로 사용하며, 지원하지 않는 공급자는 404 `NOT_FOUND`를 반환한다.
 
 02. `GET /api/auth/oauth/{provider}/callback`은 인가 코드를 액세스 토큰으로 교환하고 공급자 사용자 정보를 조회해 로그인시킨 뒤, 세션 쿠키와 함께 로그인 시작 시 받은 `next` 경로로 302 리다이렉트한다.
 
