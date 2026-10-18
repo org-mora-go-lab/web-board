@@ -8,13 +8,14 @@
   @include mixin.page-column;
 
   h1 {
-    margin-bottom: 20px;
-    font-size: 26px;
-    font-weight: 700;
+    margin-bottom: 24px;
+    font-size: 30px;
+    font-weight: 650;
+    letter-spacing: -0.045em;
   }
 
   .post-edit-card {
     @include mixin.card;
-    padding: 24px;
+    padding: 28px;
   }
 }

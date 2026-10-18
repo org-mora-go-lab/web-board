@@ -8,37 +8,109 @@
 
 .home {
   @include mixin.page-column;
+  padding-top: 0;
+
+  .home-breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    height: 56px;
+    border-bottom: 1px solid v.$line;
+    color: v.$muted;
+    font-size: 13px;
+
+    strong { color: v.$ink; font-weight: 600; }
+  }
+
+  .home-breadcrumb-separator { color: v.$line-strong; }
 
   .home-heading {
     display: flex;
-    align-items: baseline;
-    gap: 10px;
-    margin-bottom: 20px;
+    align-items: end;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 47px 0 35px;
 
     h1 {
-      font-size: 26px;
-      font-weight: 700;
+      margin-top: 9px;
+      font-size: clamp(30px, 4vw, 39px);
+      font-weight: 650;
+      letter-spacing: -0.055em;
+      line-height: 1.2;
     }
+
+    p { margin-top: 10px; color: v.$sub; font-size: 14px; }
   }
 
-  .home-total {
+  .home-eyebrow {
     color: v.$muted;
-    font-size: 14px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.13em;
   }
+
+  .home-create { flex: 0 0 auto; }
+
+  .home-metrics {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 42px;
+  }
+
+  .home-metric {
+    position: relative;
+    display: grid;
+    align-content: space-between;
+    min-height: 132px;
+    padding: 21px 24px;
+    border: 1px solid v.$line;
+    border-radius: v.$radius;
+    background: v.$surface;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.025);
+
+    span { color: v.$sub; font-size: 13px; font-weight: 500; }
+    strong { font-size: 29px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
+    svg { position: absolute; right: 23px; top: 22px; color: v.$muted; }
+  }
+
+  .home-section-heading {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+
+    h2 { font-size: 18px; font-weight: 650; letter-spacing: -0.035em; }
+    p { margin-top: 5px; color: v.$muted; font-size: 13px; }
+  }
+
+  .home-total { color: v.$sub; font-size: 12px; white-space: nowrap; }
 
   .home-toolbar {
     display: flex;
     justify-content: space-between;
     gap: 12px;
-    margin-bottom: 16px;
+    margin-bottom: 14px;
 
-    .post-search {
-      width: min(360px, 100%);
-    }
+    .post-search { width: min(420px, 100%); }
   }
 
   .home-board {
     @include mixin.card;
     overflow: hidden;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.025);
+  }
+
+  @media (max-width: v.$mobile) {
+    .home-heading { align-items: start; padding: 32px 0 26px; }
+    .home-metrics { gap: 8px; margin-bottom: 34px; }
+
+    .home-metric {
+      min-height: 110px;
+      padding: 16px;
+      strong { font-size: 24px; }
+      svg { right: 15px; top: 16px; }
+    }
   }
 }

@@ -2,7 +2,7 @@
 
 import "./index.scss";
 
-import { PenSquare } from "lucide-react";
+import { ArrowUpRight, Layers3, PenSquare } from "lucide-react";
 import Link from "next/link";
 
 import { Pagination, StatusMessage } from "@/src/entity/ui";
@@ -33,19 +33,46 @@ export function Home({ page, query }: Props) {
     <>
       <Header />
       <main className="home">
-        <div className="home-heading">
-          <h1>게시판</h1>
-          {list && <span className="home-total">{query ? `검색 결과 ${list.total}개` : `전체 ${list.total}개`}</span>}
+        <div className="home-breadcrumb" aria-label="현재 위치">
+          <span>Workspace</span>
+          <span className="home-breadcrumb-separator">/</span>
+          <strong>Board</strong>
         </div>
-        <div className="home-toolbar">
-          <PostSearch key={query} query={query} onSearch={search} />
-          <Link className="button is-primary" href="/posts/new">
-            <PenSquare size={16} aria-hidden="true" />
+        <div className="home-heading">
+          <div>
+            <span className="home-eyebrow">OVERVIEW</span>
+            <h1>게시판</h1>
+            <p>새로운 생각을 공유하고 대화를 이어가세요.</p>
+          </div>
+          <Link className="button is-primary home-create" href="/posts/new">
+            <PenSquare size={15} aria-hidden="true" />
             글쓰기
           </Link>
         </div>
-        <section className="home-board" aria-label="게시글 목록">
-          {board}
+        <div className="home-metrics">
+          <div className="home-metric">
+            <span>전체 게시글</span>
+            <strong>{list ? list.total : "—"}</strong>
+            <Layers3 size={18} aria-hidden="true" />
+          </div>
+          <div className="home-metric">
+            <span>현재 페이지</span>
+            <strong>{list ? `${list.page} / ${Math.max(list.totalPages, 1)}` : "—"}</strong>
+            <ArrowUpRight size={18} aria-hidden="true" />
+          </div>
+        </div>
+        <section className="home-content" aria-label="게시글 목록">
+          <div className="home-section-heading">
+            <div>
+              <h2>게시글 목록</h2>
+              <p>커뮤니티의 모든 이야기를 살펴보세요.</p>
+            </div>
+            {list && <span className="home-total">{query ? `검색 결과 ${list.total}개` : `전체 ${list.total}개`}</span>}
+          </div>
+          <div className="home-toolbar">
+            <PostSearch key={query} query={query} onSearch={search} />
+          </div>
+          <div className="home-board">{board}</div>
         </section>
         {list && <Pagination page={list.page} totalPages={list.totalPages} getHref={getPageHref} />}
       </main>

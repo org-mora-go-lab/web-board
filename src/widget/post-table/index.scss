@@ -19,17 +19,16 @@
   }
 
   th {
-    padding: 12px;
-    background: #fafbfc;
+    padding: 13px 18px;
+    border-bottom: 1px solid v.$line;
+    background: #fafafa;
     color: v.$muted;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: 600;
     text-align: left;
 
     &:first-child,
-    &:last-child {
-      text-align: center;
-    }
+    &:last-child { text-align: center; }
   }
 
   // Phones keep only the title and date columns.

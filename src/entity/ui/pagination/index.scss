@@ -24,8 +24,9 @@
   }
 
   .pagination-page.is-current {
-    background: v.$accent;
-    color: #fff;
+    border: 1px solid v.$line-strong;
+    background: v.$surface;
+    color: v.$ink;
     font-weight: 600;
   }
 }

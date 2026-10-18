@@ -1,6 +1,5 @@
 "use client";
 
-import { MessageSquareText } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
@@ -20,9 +19,11 @@ export function Header() {
     <header className="header">
       <div className="header-inner">
         <Link className="header-logo" href="/">
-          <MessageSquareText size={20} aria-hidden="true" />
+          <span className="header-mark" aria-hidden="true">B</span>
           Board
         </Link>
+        <span className="header-divider" aria-hidden="true" />
+        <Link className="header-section" href="/">Overview</Link>
         <nav className="header-nav" aria-label="사용자 메뉴">
           {ready &&
             (user ? (

@@ -2,7 +2,7 @@
 
 ## 01. 앱 - 구성
 
-01. Next.js App Router 기반의 게시판 웹 앱이며, `/`에 접속하면 `Board` 문서 제목과 `게시판` 목록 화면을 표시한다.
+01. Next.js App Router 기반의 게시판 웹 앱이며, `/`에 접속하면 `Board` 문서 제목과 대시보드형 `게시판` 목록 화면을 표시한다. 화면에는 전체 게시글 수, 현재 페이지, 검색과 글쓰기 동작을 제공한다.
 
 02. 백엔드는 Next.js Route Handler로 `/api/**` JSON API를 제공하고 DB 접근은 비동기 libSQL 클라이언트를 사용한다. `TURSO_DATABASE_URL`이 없는 로컬 환경에서는 SQLite 파일(`DATABASE_PATH`, 기본 `data/board.db`)에 저장한다. API 오류는 `{ error: { code, message } }` 형식으로 응답한다.
 
