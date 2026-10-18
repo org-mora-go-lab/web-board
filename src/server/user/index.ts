@@ -3,5 +3,6 @@ export {
   createUser,
   findAccount,
   findUserById,
+  updateUserNickname,
   type UserDto,
 } from "./user";
