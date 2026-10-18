@@ -49,6 +49,8 @@ export default defineConfig({
         TURSO_AUTH_TOKEN: "",
         DATABASE_PATH: E2E_DATABASE_PATH,
         NEXT_DIST_DIR: ".next-e2e",
+        // Deployment URLs are commonly copied with a trailing slash. OAuth callbacks must still be canonical.
+        APP_URL: `${BASE_URL}/`,
         ...mockOAuthEnv(),
       },
       reuseExistingServer: !process.env.CI,
