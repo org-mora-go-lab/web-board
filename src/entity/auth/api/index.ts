@@ -1,1 +1,7 @@
-export { fetchMe, loginWithEmail, logoutRequest, oauthStartUrl, signupWithEmail } from "./auth-api";
+export {
+  fetchMe,
+  loginWithEmail,
+  logoutRequest,
+  oauthStartUrl,
+  signupWithEmail,
+} from "./auth-api";

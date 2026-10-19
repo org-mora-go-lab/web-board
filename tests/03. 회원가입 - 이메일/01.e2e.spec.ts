@@ -11,8 +11,14 @@ test("1. 이메일, 닉네임, 비밀번호로 가입하면 바로 로그인되�
   await fillSignupForm(page, account);
 
   await expect(page).toHaveURL("/");
-  await expect(header(page).getByText(account.nickname, { exact: true })).toBeVisible();
+  await expect(
+    header(page).getByText(account.nickname, { exact: true }),
+  ).toBeVisible();
   expect(await readMe(page)).toEqual(
-    expect.objectContaining({ email: account.email, nickname: account.nickname, provider: "email" }),
+    expect.objectContaining({
+      email: account.email,
+      nickname: account.nickname,
+      provider: "email",
+    }),
   );
 });

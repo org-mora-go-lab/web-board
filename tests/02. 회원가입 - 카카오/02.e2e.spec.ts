@@ -12,7 +12,9 @@ test("2. 카카오로 시작하기를 누르면 client_id, redirect_uri, respons
 
   const params = new URL(page.url()).searchParams;
   expect(params.get("client_id")).toBe(MOCK_CLIENT_IDS.kakao);
-  expect(params.get("redirect_uri")).toBe(`${BASE_URL}/api/auth/oauth/kakao/callback`);
+  expect(params.get("redirect_uri")).toBe(
+    `${BASE_URL}/api/auth/oauth/kakao/callback`,
+  );
   expect(params.get("response_type")).toBe("code");
   expect(params.get("state")).toMatch(/^[\w-]{16,}$/);
 });

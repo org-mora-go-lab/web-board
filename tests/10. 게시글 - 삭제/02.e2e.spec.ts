@@ -3,7 +3,9 @@ import { expect, test } from "@playwright/test";
 import { createPostByApi, loginAsNewUser } from "../__util__";
 import { deletePopup, openDeletePopup } from "./__util__";
 
-test("2. 확인 팝업을 취소, Escape 또는 바깥 영역 클릭으로 닫으면 게시글을 삭제하지 않는다", async ({ page }) => {
+test("2. 확인 팝업을 취소, Escape 또는 바깥 영역 클릭으로 닫으면 게시글을 삭제하지 않는다", async ({
+  page,
+}) => {
   await loginAsNewUser(page);
   const post = await createPostByApi(page.request);
   await page.goto(`/posts/${post.id}`);

@@ -9,9 +9,13 @@ test("4. POST /api/auth/login은 맞으면 200과 세션 쿠키를, 틀리면 40
   const { account, user } = await signupByApi(request);
   const api = await newAnonymousApi();
 
-  const success = await api.post("/api/auth/login", { data: { email: account.email, password: account.password } });
+  const success = await api.post("/api/auth/login", {
+    data: { email: account.email, password: account.password },
+  });
   expect(success.status()).toBe(200);
-  expect((await success.json()).user).toEqual(expect.objectContaining({ id: user.id, provider: "email" }));
+  expect((await success.json()).user).toEqual(
+    expect.objectContaining({ id: user.id, provider: "email" }),
+  );
   expect(readSetCookie(success, SESSION_COOKIE)).toContain("HttpOnly");
 
   for (const data of [

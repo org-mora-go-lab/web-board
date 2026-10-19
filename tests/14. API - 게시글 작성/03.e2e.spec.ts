@@ -22,16 +22,24 @@ test("3. 제목·내용이 비었거나 길이를 넘으면 400 VALIDATION_ERROR
     expect(Object.keys(error.fields)).toEqual([field]);
   }
 
-  const boundary = await request.post("/api/posts", { data: { title: "가".repeat(100), content: "가".repeat(5000) } });
+  const boundary = await request.post("/api/posts", {
+    data: { title: "가".repeat(100), content: "가".repeat(5000) },
+  });
   expect(boundary.status()).toBe(201);
 
   const rawBodies = [
     { body: "not json", contentType: "application/json" },
     { body: "[1, 2]", contentType: "application/json" },
-    { body: JSON.stringify({ title: "제목", content: "내용" }), contentType: "text/plain" },
+    {
+      body: JSON.stringify({ title: "제목", content: "내용" }),
+      contentType: "text/plain",
+    },
   ];
   for (const { body, contentType } of rawBodies) {
-    const response = await request.post("/api/posts", { data: body, headers: { "Content-Type": contentType } });
+    const response = await request.post("/api/posts", {
+      data: body,
+      headers: { "Content-Type": contentType },
+    });
     expect(response.status()).toBe(400);
     expect((await response.json()).error.code).toBe("INVALID_JSON");
   }

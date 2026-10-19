@@ -8,11 +8,11 @@
 
 ## 기술 스택
 
-| 영역 | 사용 기술 |
-| --- | --- |
-| 프론트엔드 | Next.js 16 App Router, React 19, Zustand, SCSS, lucide-react |
-| 백엔드 | Next.js Route Handler(`/api/**`), 비동기 [libSQL 클라이언트](https://docs.turso.tech/sdk/ts/reference), 로컬 SQLite / 원격 Turso |
-| 테스트 | Playwright (`PRD.md` 요구사항별 화면·API E2E), 카카오 모의 OAuth 서버 |
+| 영역       | 사용 기술                                                                                                                        |
+| ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
+| 프론트엔드 | Next.js 16 App Router, React 19, Zustand, SCSS, lucide-react                                                                     |
+| 백엔드     | Next.js Route Handler(`/api/**`), 비동기 [libSQL 클라이언트](https://docs.turso.tech/sdk/ts/reference), 로컬 SQLite / 원격 Turso |
+| 테스트     | Playwright (`PRD.md` 요구사항별 화면·API E2E), 카카오 모의 OAuth 서버                                                            |
 
 ## 시작하기
 
@@ -31,11 +31,11 @@ Vercel Functions의 배포 경로(`/var/task`)에는 DB 파일을 저장할 수 
 1. [Turso](https://turso.tech)에서 DB를 생성하고 연결 URL과 인증 토큰을 발급합니다.
 2. Vercel 프로젝트의 Settings > Environment Variables에서 다음 값을 설정합니다. Production과 사용하는 Preview 환경 모두에 적용하세요.
 
-| 변수 | 값 |
-| --- | --- |
+| 변수                 | 값                                                      |
+| -------------------- | ------------------------------------------------------- |
 | `TURSO_DATABASE_URL` | 발급받은 `libsql://...turso.io` URL (`https://`도 지원) |
-| `TURSO_AUTH_TOKEN` | 발급받은 DB 인증 토큰, 서버 전용 비밀 값 |
-| `APP_URL` | `https://web-board-alpha.vercel.app` 등 실제 앱 주소 |
+| `TURSO_AUTH_TOKEN`   | 발급받은 DB 인증 토큰, 서버 전용 비밀 값                |
+| `APP_URL`            | `https://web-board-alpha.vercel.app` 등 실제 앱 주소    |
 
 3. 소셜 로그인 키와 각 공급자의 Redirect URI도 배포 도메인으로 설정합니다.
 4. 변경 코드를 배포하고 환경변수 적용 후 재배포합니다. `/api/posts`가 200으로 응답하고 회원가입·로그인·게시글 저장이 정상인지 확인합니다.
@@ -58,8 +58,8 @@ npm run mock                 # http://localhost:3200
 
 ### 소셜 로그인 설정
 
-| 변수 | 발급 위치 |
-| --- | --- |
+| 변수                                     | 발급 위치                                                                                                     |
+| ---------------------------------------- | ------------------------------------------------------------------------------------------------------------- |
 | `KAKAO_CLIENT_ID`, `KAKAO_CLIENT_SECRET` | [Kakao Developers](https://developers.kakao.com) → 내 애플리케이션 → 앱 키(REST API 키) / 보안(Client Secret) |
 
 각 콘솔에 아래 Redirect URI를 등록합니다. 배포 환경에서는 도메인을 바꿔 등록하고, 프록시 뒤에서 실행하면 `APP_URL`(예: `https://board.example.com`)을 설정하세요.
@@ -69,13 +69,14 @@ npm run mock                 # http://localhost:3200
 
 ## 스크립트
 
-| 명령 | 설명 |
-| --- | --- |
-| `npm run dev` | 개발 서버 |
-| `npm run mock` | 기본 mock 사용자로 로그인 가능한 별도 개발 환경 |
-| `npm run build` / `npm start` | 프로덕션 빌드 / 실행 |
-| `npm run lint` | ESLint |
-| `npm run test:e2e` | Playwright E2E 전체 실행 |
+| 명령                                      | 설명                                            |
+| ----------------------------------------- | ----------------------------------------------- |
+| `npm run dev`                             | 개발 서버                                       |
+| `npm run mock`                            | 기본 mock 사용자로 로그인 가능한 별도 개발 환경 |
+| `npm run build` / `npm start`             | 프로덕션 빌드 / 실행                            |
+| `npm run lint`                            | ESLint                                          |
+| `npm run format` / `npm run format:check` | Prettier 적용 / 형식 검사                       |
+| `npm run test:e2e`                        | Playwright E2E 전체 실행                        |
 
 `npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3100), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오 대신 `tests/__mock__/oauth-server.mjs`(포트 4100)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
 
@@ -85,19 +86,19 @@ mock 실행 요구사항은 `npm run mock`으로 별도 앱(3300), OAuth 서버(
 
 ## API
 
-| 메서드 | 경로 | 설명 |
-| --- | --- | --- |
-| `POST` | `/api/auth/signup` | 이메일 회원가입 (자동 로그인) |
-| `POST` | `/api/auth/login` | 이메일 로그인 |
-| `POST` | `/api/auth/logout` | 로그아웃 |
-| `GET` | `/api/auth/me` | 현재 사용자 (`{ user: null }`이면 비로그인) |
-| `GET` | `/api/auth/oauth/kakao?next=/path` | 카카오 로그인 시작 |
-| `GET` | `/api/auth/oauth/kakao/callback` | 카카오 로그인 콜백 |
-| `GET` | `/api/posts?page=1&size=10&q=검색어` | 게시글 목록 |
-| `POST` | `/api/posts` | 게시글 작성 (로그인 필요) |
-| `GET` | `/api/posts/{id}` | 게시글 상세 |
-| `PATCH` | `/api/posts/{id}` | 게시글 수정 (작성자만) |
-| `DELETE` | `/api/posts/{id}` | 게시글 삭제 (작성자만) |
+| 메서드   | 경로                                 | 설명                                        |
+| -------- | ------------------------------------ | ------------------------------------------- |
+| `POST`   | `/api/auth/signup`                   | 이메일 회원가입 (자동 로그인)               |
+| `POST`   | `/api/auth/login`                    | 이메일 로그인                               |
+| `POST`   | `/api/auth/logout`                   | 로그아웃                                    |
+| `GET`    | `/api/auth/me`                       | 현재 사용자 (`{ user: null }`이면 비로그인) |
+| `GET`    | `/api/auth/oauth/kakao?next=/path`   | 카카오 로그인 시작                          |
+| `GET`    | `/api/auth/oauth/kakao/callback`     | 카카오 로그인 콜백                          |
+| `GET`    | `/api/posts?page=1&size=10&q=검색어` | 게시글 목록                                 |
+| `POST`   | `/api/posts`                         | 게시글 작성 (로그인 필요)                   |
+| `GET`    | `/api/posts/{id}`                    | 게시글 상세                                 |
+| `PATCH`  | `/api/posts/{id}`                    | 게시글 수정 (작성자만)                      |
+| `DELETE` | `/api/posts/{id}`                    | 게시글 삭제 (작성자만)                      |
 
 오류는 `{ "error": { "code": "VALIDATION_ERROR", "message": "...", "fields": { "title": "..." } } }` 형식으로 응답합니다.
 

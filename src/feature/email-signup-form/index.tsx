@@ -10,7 +10,8 @@ type Props = {
 };
 
 export function EmailSignupForm({ onSuccess }: Props) {
-  const { values, setValue, errors, pending, submit } = useEmailSignupForm(onSuccess);
+  const { values, setValue, errors, pending, submit } =
+    useEmailSignupForm(onSuccess);
 
   return (
     <form className="email-signup-form" onSubmit={submit} noValidate>

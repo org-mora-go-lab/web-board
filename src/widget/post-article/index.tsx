@@ -19,9 +19,14 @@ export function PostArticle({ post, actions }: Props) {
         <h1>{post.title}</h1>
         <div className="post-article-meta">
           <span className="post-article-author">{post.author.nickname}</span>
-          <time dateTime={post.createdAt}>{formatDateTime(post.createdAt)}</time>
+          <time dateTime={post.createdAt}>
+            {formatDateTime(post.createdAt)}
+          </time>
           {edited && (
-            <span className="post-article-edited" title={formatDateTime(post.updatedAt)}>
+            <span
+              className="post-article-edited"
+              title={formatDateTime(post.updatedAt)}
+            >
               수정됨
             </span>
           )}

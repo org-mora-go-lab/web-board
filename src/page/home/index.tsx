@@ -22,9 +22,14 @@ export function Home({ page, query }: Props) {
   const board = loading ? (
     <StatusMessage message="게시글을 불러오는 중입니다." />
   ) : error || !list ? (
-    <StatusMessage tone="error" message={error?.message ?? "게시글을 불러오지 못했습니다."} />
+    <StatusMessage
+      tone="error"
+      message={error?.message ?? "게시글을 불러오지 못했습니다."}
+    />
   ) : list.posts.length === 0 ? (
-    <StatusMessage message={query ? "검색 결과가 없습니다." : "등록된 게시글이 없습니다."} />
+    <StatusMessage
+      message={query ? "검색 결과가 없습니다." : "등록된 게시글이 없습니다."}
+    />
   ) : (
     <PostTable posts={list.posts} />
   );
@@ -57,7 +62,9 @@ export function Home({ page, query }: Props) {
           </div>
           <div className="home-metric">
             <span>현재 페이지</span>
-            <strong>{list ? `${list.page} / ${Math.max(list.totalPages, 1)}` : "—"}</strong>
+            <strong>
+              {list ? `${list.page} / ${Math.max(list.totalPages, 1)}` : "—"}
+            </strong>
             <ArrowUpRight size={18} aria-hidden="true" />
           </div>
         </div>
@@ -67,14 +74,24 @@ export function Home({ page, query }: Props) {
               <h2>게시글 목록</h2>
               <p>커뮤니티의 모든 이야기를 살펴보세요.</p>
             </div>
-            {list && <span className="home-total">{query ? `검색 결과 ${list.total}개` : `전체 ${list.total}개`}</span>}
+            {list && (
+              <span className="home-total">
+                {query ? `검색 결과 ${list.total}개` : `전체 ${list.total}개`}
+              </span>
+            )}
           </div>
           <div className="home-toolbar">
             <PostSearch key={query} query={query} onSearch={search} />
           </div>
           <div className="home-board">{board}</div>
         </section>
-        {list && <Pagination page={list.page} totalPages={list.totalPages} getHref={getPageHref} />}
+        {list && (
+          <Pagination
+            page={list.page}
+            totalPages={list.totalPages}
+            getHref={getPageHref}
+          />
+        )}
       </main>
     </>
   );

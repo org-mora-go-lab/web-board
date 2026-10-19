@@ -8,8 +8,12 @@
     font-size: 14px;
   }
 
-  &:last-child td { border-bottom: 0; }
-  &:hover td { background: #fafafa; }
+  &:last-child td {
+    border-bottom: 0;
+  }
+  &:hover td {
+    background: #fafafa;
+  }
 
   .post-row-id,
   .post-row-date {

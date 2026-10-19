@@ -22,7 +22,9 @@ export class HttpError extends Error {
   }
 }
 
-export const unauthorized = () => new HttpError(401, "UNAUTHORIZED", "로그인이 필요합니다.");
-export const forbidden = (message = "권한이 없습니다.") => new HttpError(403, "FORBIDDEN", message);
+export const unauthorized = () =>
+  new HttpError(401, "UNAUTHORIZED", "로그인이 필요합니다.");
+export const forbidden = (message = "권한이 없습니다.") =>
+  new HttpError(403, "FORBIDDEN", message);
 export const validationError = (fields: FieldErrors) =>
   new HttpError(400, "VALIDATION_ERROR", Object.values(fields)[0], fields);

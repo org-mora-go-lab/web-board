@@ -10,4 +10,6 @@ export class ApiError extends Error {
 }
 
 export const toApiError = (error: unknown) =>
-  error instanceof ApiError ? error : new ApiError(0, "NETWORK_ERROR", "서버에 연결할 수 없습니다.");
+  error instanceof ApiError
+    ? error
+    : new ApiError(0, "NETWORK_ERROR", "서버에 연결할 수 없습니다.");

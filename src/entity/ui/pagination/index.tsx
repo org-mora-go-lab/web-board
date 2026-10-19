@@ -14,12 +14,19 @@ export function Pagination({ page, totalPages, getHref }: Props) {
   if (totalPages <= 1) return null;
   const start = Math.floor((page - 1) / WINDOW_SIZE) * WINDOW_SIZE + 1;
   const end = Math.min(start + WINDOW_SIZE - 1, totalPages);
-  const pages = Array.from({ length: end - start + 1 }, (_, index) => start + index);
+  const pages = Array.from(
+    { length: end - start + 1 },
+    (_, index) => start + index,
+  );
 
   return (
     <nav className="pagination" aria-label="페이지 이동">
       {start > 1 && (
-        <Link className="pagination-arrow" href={getHref(start - 1)} aria-label="이전 페이지 목록">
+        <Link
+          className="pagination-arrow"
+          href={getHref(start - 1)}
+          aria-label="이전 페이지 목록"
+        >
           <ChevronLeft size={16} />
         </Link>
       )}
@@ -35,7 +42,11 @@ export function Pagination({ page, totalPages, getHref }: Props) {
         </Link>
       ))}
       {end < totalPages && (
-        <Link className="pagination-arrow" href={getHref(end + 1)} aria-label="다음 페이지 목록">
+        <Link
+          className="pagination-arrow"
+          href={getHref(end + 1)}
+          aria-label="다음 페이지 목록"
+        >
           <ChevronRight size={16} />
         </Link>
       )}

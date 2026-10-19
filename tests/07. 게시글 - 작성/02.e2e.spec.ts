@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 
 import { contentField, loginAsNewUser, titleField } from "../__util__";
 
-test("2. 제목이나 내용이 비어 있으면 등록하지 않고 입력 요청 메시지를 표시한다", async ({ page }) => {
+test("2. 제목이나 내용이 비어 있으면 등록하지 않고 입력 요청 메시지를 표시한다", async ({
+  page,
+}) => {
   await loginAsNewUser(page);
   await page.goto("/posts/new");
 

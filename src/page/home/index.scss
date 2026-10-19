@@ -19,10 +19,15 @@
     color: v.$muted;
     font-size: 13px;
 
-    strong { color: v.$ink; font-weight: 600; }
+    strong {
+      color: v.$ink;
+      font-weight: 600;
+    }
   }
 
-  .home-breadcrumb-separator { color: v.$line-strong; }
+  .home-breadcrumb-separator {
+    color: v.$line-strong;
+  }
 
   .home-heading {
     display: flex;
@@ -39,7 +44,11 @@
       line-height: 1.2;
     }
 
-    p { margin-top: 10px; color: v.$sub; font-size: 14px; }
+    p {
+      margin-top: 10px;
+      color: v.$sub;
+      font-size: 14px;
+    }
   }
 
   .home-eyebrow {
@@ -49,7 +58,9 @@
     letter-spacing: 0.13em;
   }
 
-  .home-create { flex: 0 0 auto; }
+  .home-create {
+    flex: 0 0 auto;
+  }
 
   .home-metrics {
     display: grid;
@@ -69,9 +80,23 @@
     background: v.$surface;
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.025);
 
-    span { color: v.$sub; font-size: 13px; font-weight: 500; }
-    strong { font-size: 29px; font-weight: 600; letter-spacing: -0.05em; line-height: 1; }
-    svg { position: absolute; right: 23px; top: 22px; color: v.$muted; }
+    span {
+      color: v.$sub;
+      font-size: 13px;
+      font-weight: 500;
+    }
+    strong {
+      font-size: 29px;
+      font-weight: 600;
+      letter-spacing: -0.05em;
+      line-height: 1;
+    }
+    svg {
+      position: absolute;
+      right: 23px;
+      top: 22px;
+      color: v.$muted;
+    }
   }
 
   .home-section-heading {
@@ -81,11 +106,23 @@
     gap: 16px;
     margin-bottom: 18px;
 
-    h2 { font-size: 18px; font-weight: 650; letter-spacing: -0.035em; }
-    p { margin-top: 5px; color: v.$muted; font-size: 13px; }
+    h2 {
+      font-size: 18px;
+      font-weight: 650;
+      letter-spacing: -0.035em;
+    }
+    p {
+      margin-top: 5px;
+      color: v.$muted;
+      font-size: 13px;
+    }
   }
 
-  .home-total { color: v.$sub; font-size: 12px; white-space: nowrap; }
+  .home-total {
+    color: v.$sub;
+    font-size: 12px;
+    white-space: nowrap;
+  }
 
   .home-toolbar {
     display: flex;
@@ -93,7 +130,9 @@
     gap: 12px;
     margin-bottom: 14px;
 
-    .post-search { width: min(420px, 100%); }
+    .post-search {
+      width: min(420px, 100%);
+    }
   }
 
   .home-board {
@@ -103,14 +142,25 @@
   }
 
   @media (max-width: v.$mobile) {
-    .home-heading { align-items: start; padding: 32px 0 26px; }
-    .home-metrics { gap: 8px; margin-bottom: 34px; }
+    .home-heading {
+      align-items: start;
+      padding: 32px 0 26px;
+    }
+    .home-metrics {
+      gap: 8px;
+      margin-bottom: 34px;
+    }
 
     .home-metric {
       min-height: 110px;
       padding: 16px;
-      strong { font-size: 24px; }
-      svg { right: 15px; top: 16px; }
+      strong {
+        font-size: 24px;
+      }
+      svg {
+        right: 15px;
+        top: 16px;
+      }
     }
   }
 }

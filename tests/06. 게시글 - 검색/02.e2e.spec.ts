@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 
 import { postRows, searchPosts, uniqueId } from "../__util__";
 
-test("2. 검색 결과가 없으면 검색 결과가 없습니다를 표시한다", async ({ page }) => {
+test("2. 검색 결과가 없으면 검색 결과가 없습니다를 표시한다", async ({
+  page,
+}) => {
   await page.goto("/");
   await searchPosts(page, uniqueId("nothing"));
 

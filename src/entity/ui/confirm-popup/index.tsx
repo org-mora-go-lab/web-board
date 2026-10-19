@@ -13,7 +13,14 @@ type Props = {
 };
 
 // Modal confirmation with Cancel focused first; Escape and backdrop clicks cancel.
-export function ConfirmPopup({ title, message, confirmLabel = "삭제", pending = false, onConfirm, onCancel }: Props) {
+export function ConfirmPopup({
+  title,
+  message,
+  confirmLabel = "삭제",
+  pending = false,
+  onConfirm,
+  onCancel,
+}: Props) {
   const dialogRef = useRef<HTMLDialogElement>(null);
   const cancelButtonRef = useRef<HTMLButtonElement>(null);
   const id = useId();
@@ -46,10 +53,20 @@ export function ConfirmPopup({ title, message, confirmLabel = "삭제", pending 
         </div>
         <p id={`${id}-message`}>{message}</p>
         <div className="confirm-popup-actions">
-          <button ref={cancelButtonRef} className="button" type="button" onClick={onCancel}>
+          <button
+            ref={cancelButtonRef}
+            className="button"
+            type="button"
+            onClick={onCancel}
+          >
             취소
           </button>
-          <button className="button is-danger" type="button" disabled={pending} onClick={onConfirm}>
+          <button
+            className="button is-danger"
+            type="button"
+            disabled={pending}
+            onClick={onConfirm}
+          >
             {confirmLabel}
           </button>
         </div>

@@ -8,7 +8,9 @@ test("1. POST /api/posts는 로그인 사용자의 게시글을 만들어 201로
   const { user } = await signupByApi(request);
   const title = `API 작성 ${uniqueId()}`;
 
-  const response = await request.post("/api/posts", { data: { title: `   ${title}  `, content: "  본문은 그대로  " } });
+  const response = await request.post("/api/posts", {
+    data: { title: `   ${title}  `, content: "  본문은 그대로  " },
+  });
 
   expect(response.status()).toBe(201);
   const { post } = await response.json();

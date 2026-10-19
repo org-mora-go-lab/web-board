@@ -4,7 +4,10 @@ import "./index.scss";
 
 import Link from "next/link";
 
-import { LOGIN_ERROR_MESSAGES, useRedirectWhenSignedIn } from "@/src/entity/auth";
+import {
+  LOGIN_ERROR_MESSAGES,
+  useRedirectWhenSignedIn,
+} from "@/src/entity/auth";
 import { EmailLoginForm, SocialLogin } from "@/src/feature";
 import { Header } from "@/src/widget";
 
@@ -16,7 +19,8 @@ type Props = {
 export function Login({ next, errorCode }: Props) {
   const { setUser } = useRedirectWhenSignedIn(next);
   const errorMessage = LOGIN_ERROR_MESSAGES[errorCode];
-  const signupHref = next === "/" ? "/signup" : `/signup?next=${encodeURIComponent(next)}`;
+  const signupHref =
+    next === "/" ? "/signup" : `/signup?next=${encodeURIComponent(next)}`;
 
   return (
     <>

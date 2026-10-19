@@ -1,1 +1,4 @@
-export { PostDetailPage as default, PostDetailPageMetadata as metadata } from "@/src/page";
+export {
+  PostDetailPage as default,
+  PostDetailPageMetadata as metadata,
+} from "@/src/page";

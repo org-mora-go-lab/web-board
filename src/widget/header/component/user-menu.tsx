@@ -14,7 +14,9 @@ const PROVIDER_LABELS = { email: "이메일", kakao: "카카오" };
 export function UserMenu({ user, onLogout }: Props) {
   return (
     <div className="user-menu">
-      <span className={`user-menu-provider is-${user.provider}`}>{PROVIDER_LABELS[user.provider]}</span>
+      <span className={`user-menu-provider is-${user.provider}`}>
+        {PROVIDER_LABELS[user.provider]}
+      </span>
       <strong className="user-menu-nickname">{user.nickname}</strong>
       <button className="button is-ghost" type="button" onClick={onLogout}>
         <LogOut size={15} aria-hidden="true" />

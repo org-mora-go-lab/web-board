@@ -42,9 +42,17 @@ export function TextField({
     <div className={`text-field ${error ? "has-error" : ""}`}>
       <label htmlFor={id}>{label}</label>
       {multiline ? (
-        <textarea {...inputProps} rows={14} onChange={(event) => onChange(event.target.value)} />
+        <textarea
+          {...inputProps}
+          rows={14}
+          onChange={(event) => onChange(event.target.value)}
+        />
       ) : (
-        <input {...inputProps} type={type} onChange={(event) => onChange(event.target.value)} />
+        <input
+          {...inputProps}
+          type={type}
+          onChange={(event) => onChange(event.target.value)}
+        />
       )}
       {(error || maxLength) && (
         <div className="text-field-footer">

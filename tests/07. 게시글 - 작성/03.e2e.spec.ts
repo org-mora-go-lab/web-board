@@ -2,7 +2,9 @@ import { expect, test } from "@playwright/test";
 
 import { contentField, loginAsNewUser, titleField } from "../__util__";
 
-test("3. 제목은 100자, 내용은 5000자까지 입력할 수 있으며 현재 글자 수를 표시한다", async ({ page }) => {
+test("3. 제목은 100자, 내용은 5000자까지 입력할 수 있으며 현재 글자 수를 표시한다", async ({
+  page,
+}) => {
   await loginAsNewUser(page);
   await page.goto("/posts/new");
 

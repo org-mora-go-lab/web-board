@@ -14,7 +14,11 @@ async function loadPost(context: Context) {
 }
 
 // Authentication is checked before lookup so anonymous callers always get 401, never 404/403.
-async function loadOwnPost(request: NextRequest, context: Context, action: string) {
+async function loadOwnPost(
+  request: NextRequest,
+  context: Context,
+  action: string,
+) {
   const user = await requireUser(request);
   const post = await loadPost(context);
   if (post.author.id !== user.id) throw forbidden(`${action} 권한이 없습니다.`);

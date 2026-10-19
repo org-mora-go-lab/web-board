@@ -11,5 +11,7 @@ const toPage = (value: unknown) => {
 
 export default async function HomePage({ searchParams }: Props) {
   const { page, q } = await searchParams;
-  return <Home page={toPage(page)} query={typeof q === "string" ? q.trim() : ""} />;
+  return (
+    <Home page={toPage(page)} query={typeof q === "string" ? q.trim() : ""} />
+  );
 }

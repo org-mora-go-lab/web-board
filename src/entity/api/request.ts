@@ -1,12 +1,20 @@
 import { ApiError } from "./api-error";
 
-type ErrorBody = { error?: { code?: string; message?: string; fields?: Record<string, string> } };
+type ErrorBody = {
+  error?: { code?: string; message?: string; fields?: Record<string, string> };
+};
 
 // Calls the board JSON API and throws `ApiError` with the server's `{ error }` payload on failure.
-export async function apiRequest<T>(path: string, init: { method?: string; body?: unknown } = {}): Promise<T> {
+export async function apiRequest<T>(
+  path: string,
+  init: { method?: string; body?: unknown } = {},
+): Promise<T> {
   const response = await fetch(path, {
     method: init.method ?? "GET",
-    headers: init.body === undefined ? undefined : { "Content-Type": "application/json" },
+    headers:
+      init.body === undefined
+        ? undefined
+        : { "Content-Type": "application/json" },
     body: init.body === undefined ? undefined : JSON.stringify(init.body),
     cache: "no-store",
   });

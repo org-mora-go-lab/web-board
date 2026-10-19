@@ -6,7 +6,12 @@ import { NICKNAME_MAX_LENGTH } from "@/src/entity/auth/constant";
 import { toSafeNextPath } from "@/src/entity/auth/util";
 
 import { handle, HttpError } from "../../http";
-import { createUser, findAccount, findUserById, updateUserNickname } from "../../user";
+import {
+  createUser,
+  findAccount,
+  findUserById,
+  updateUserNickname,
+} from "../../user";
 import {
   buildAuthorizeUrl,
   fetchOAuthProfile,
@@ -24,19 +29,27 @@ const OAUTH_COOKIE_PATH = "/api/auth/oauth";
 const OAUTH_COOKIE_MAX_AGE = 10 * 60;
 const DEFAULT_NICKNAMES = { kakao: "카카오 사용자" };
 
-const appOrigin = (request: NextRequest) => new URL(process.env.APP_URL || request.nextUrl.origin).origin;
+const appOrigin = (request: NextRequest) =>
+  new URL(process.env.APP_URL || request.nextUrl.origin).origin;
 const callbackUrl = (request: NextRequest, provider: OAuthProvider) =>
   `${appOrigin(request)}/api/auth/oauth/${provider.id}/callback`;
 
 async function resolveProvider(context: Context) {
   const provider = getOAuthProvider((await context.params).provider);
-  if (!provider) throw new HttpError(404, "NOT_FOUND", "지원하지 않는 로그인 방식입니다.");
+  if (!provider)
+    throw new HttpError(404, "NOT_FOUND", "지원하지 않는 로그인 방식입니다.");
   return provider;
 }
 
 function redirectTo(request: NextRequest, path: string) {
-  const response = NextResponse.redirect(new URL(path, appOrigin(request)), 302);
-  response.cookies.set(STATE_COOKIE, "", { path: OAUTH_COOKIE_PATH, maxAge: 0 });
+  const response = NextResponse.redirect(
+    new URL(path, appOrigin(request)),
+    302,
+  );
+  response.cookies.set(STATE_COOKIE, "", {
+    path: OAUTH_COOKIE_PATH,
+    maxAge: 0,
+  });
   response.cookies.set(NEXT_COOKIE, "", { path: OAUTH_COOKIE_PATH, maxAge: 0 });
   return response;
 }
@@ -51,10 +64,14 @@ function redirectToLogin(request: NextRequest, error: string, next: string) {
 export const startOAuth = handle(async (request, context: Context) => {
   const provider = await resolveProvider(context);
   const next = toSafeNextPath(request.nextUrl.searchParams.get("next"));
-  if (!provider.clientId) return redirectToLogin(request, "oauth_unconfigured", next);
+  if (!provider.clientId)
+    return redirectToLogin(request, "oauth_unconfigured", next);
 
   const state = randomBytes(16).toString("base64url");
-  const response = NextResponse.redirect(buildAuthorizeUrl(provider, callbackUrl(request, provider), state), 302);
+  const response = NextResponse.redirect(
+    buildAuthorizeUrl(provider, callbackUrl(request, provider), state),
+    302,
+  );
   const cookieOptions = {
     httpOnly: true,
     sameSite: "lax" as const,
@@ -84,7 +101,11 @@ export const finishOAuth = handle(async (request, context: Context) => {
 
   let profile;
   try {
-    profile = await fetchOAuthProfile(provider, code, callbackUrl(request, provider));
+    profile = await fetchOAuthProfile(
+      provider,
+      code,
+      callbackUrl(request, provider),
+    );
   } catch (error) {
     console.error(error);
     return redirectToLogin(request, "oauth_failed", next);
@@ -100,7 +121,10 @@ export const finishOAuth = handle(async (request, context: Context) => {
   return signIn(request, redirectTo(request, next), user);
 });
 
-async function findOAuthUser(providerId: OAuthProvider["id"], profileId: string) {
+async function findOAuthUser(
+  providerId: OAuthProvider["id"],
+  profileId: string,
+) {
   const account = await findAccount(providerId, profileId);
   return account ? findUserById(account.userId) : null;
 }
@@ -108,14 +132,18 @@ async function findOAuthUser(providerId: OAuthProvider["id"], profileId: string)
 async function createOAuthUser(provider: OAuthProvider, profile: OAuthProfile) {
   try {
     return await createUser({
-      nickname: profile.nickname.trim().slice(0, NICKNAME_MAX_LENGTH) || DEFAULT_NICKNAMES[provider.id],
+      nickname:
+        profile.nickname.trim().slice(0, NICKNAME_MAX_LENGTH) ||
+        DEFAULT_NICKNAMES[provider.id],
       email: profile.email,
       provider: provider.id,
       providerAccountId: profile.id,
     });
   } catch (error) {
     // A concurrent first login (double tab, retry) may have created the account in the meantime.
-    const existing = String(error).includes("UNIQUE") ? await findOAuthUser(provider.id, profile.id) : null;
+    const existing = String(error).includes("UNIQUE")
+      ? await findOAuthUser(provider.id, profile.id)
+      : null;
     if (!existing) throw error;
     return existing;
   }

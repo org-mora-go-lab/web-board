@@ -2,14 +2,22 @@ import { mkdir } from "node:fs/promises";
 import path from "node:path";
 import { pathToFileURL } from "node:url";
 
-import { type Client, createClient, type InValue, type Transaction } from "@libsql/client";
+import {
+  type Client,
+  createClient,
+  type InValue,
+  type Transaction,
+} from "@libsql/client";
 
 import { SCHEMA } from "./schema";
 
 type QueryDb = {
   all<T>(sql: string, params?: InValue[]): Promise<T[]>;
   get<T>(sql: string, params?: InValue[]): Promise<T | undefined>;
-  run(sql: string, params?: InValue[]): Promise<{ lastInsertId: number; changes: number }>;
+  run(
+    sql: string,
+    params?: InValue[],
+  ): Promise<{ lastInsertId: number; changes: number }>;
 };
 
 export type Db = QueryDb & {
@@ -42,11 +50,17 @@ async function openDb(): Promise<Db> {
 
   let url = remoteUrl;
   if (!url) {
-    const filePath = path.resolve(/*turbopackIgnore: true*/ process.env.DATABASE_PATH || DEFAULT_DATABASE_PATH);
+    const filePath = path.resolve(
+      /*turbopackIgnore: true*/ process.env.DATABASE_PATH ||
+        DEFAULT_DATABASE_PATH,
+    );
     await mkdir(path.dirname(filePath), { recursive: true });
     url = pathToFileURL(filePath).href;
   }
-  const client = createClient({ url, authToken: remoteUrl ? authToken : undefined });
+  const client = createClient({
+    url,
+    authToken: remoteUrl ? authToken : undefined,
+  });
   try {
     await client.execute("PRAGMA foreign_keys = ON");
     await client.executeMultiple(SCHEMA);
@@ -85,7 +99,10 @@ function queries(executor: Client | Transaction): QueryDb {
     },
     run: async (sql, params = []) => {
       const result = await executor.execute({ sql, args: params });
-      return { lastInsertId: Number(result.lastInsertRowid ?? 0), changes: result.rowsAffected };
+      return {
+        lastInsertId: Number(result.lastInsertRowid ?? 0),
+        changes: result.rowsAffected,
+      };
     },
   };
 }

@@ -4,10 +4,16 @@ import type { OAuthProfile, OAuthProvider } from "./oauth-provider";
 const PROVIDERS = { kakao: kakaoProvider };
 
 export function getOAuthProvider(id: string): OAuthProvider | null {
-  return Object.hasOwn(PROVIDERS, id) ? PROVIDERS[id as keyof typeof PROVIDERS]() : null;
+  return Object.hasOwn(PROVIDERS, id)
+    ? PROVIDERS[id as keyof typeof PROVIDERS]()
+    : null;
 }
 
-export function buildAuthorizeUrl(provider: OAuthProvider, redirectUri: string, state: string) {
+export function buildAuthorizeUrl(
+  provider: OAuthProvider,
+  redirectUri: string,
+  state: string,
+) {
   const url = new URL(provider.authorizeUrl);
   url.search = new URLSearchParams({
     client_id: provider.clientId,
@@ -27,7 +33,9 @@ export async function fetchOAuthProfile(
 ): Promise<OAuthProfile> {
   const tokenResponse = await fetch(provider.tokenUrl, {
     method: "POST",
-    headers: { "Content-Type": "application/x-www-form-urlencoded;charset=utf-8" },
+    headers: {
+      "Content-Type": "application/x-www-form-urlencoded;charset=utf-8",
+    },
     body: new URLSearchParams({
       grant_type: "authorization_code",
       client_id: provider.clientId,
@@ -38,15 +46,24 @@ export async function fetchOAuthProfile(
     }),
     cache: "no-store",
   });
-  if (!tokenResponse.ok) throw new Error(`${provider.id} token exchange failed: ${tokenResponse.status}`);
-  const { access_token: accessToken } = (await tokenResponse.json()) as { access_token?: string };
-  if (!accessToken) throw new Error(`${provider.id} token response has no access_token`);
+  if (!tokenResponse.ok)
+    throw new Error(
+      `${provider.id} token exchange failed: ${tokenResponse.status}`,
+    );
+  const { access_token: accessToken } = (await tokenResponse.json()) as {
+    access_token?: string;
+  };
+  if (!accessToken)
+    throw new Error(`${provider.id} token response has no access_token`);
 
   const userResponse = await fetch(provider.userInfoUrl, {
     headers: { Authorization: `Bearer ${accessToken}` },
     cache: "no-store",
   });
-  if (!userResponse.ok) throw new Error(`${provider.id} profile request failed: ${userResponse.status}`);
+  if (!userResponse.ok)
+    throw new Error(
+      `${provider.id} profile request failed: ${userResponse.status}`,
+    );
   const profile = provider.parseProfile(await userResponse.json());
   if (!profile.id) throw new Error(`${provider.id} profile has no id`);
   return profile;

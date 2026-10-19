@@ -1,6 +1,10 @@
 "use client";
 
-import { POST_CONTENT_MAX_LENGTH, POST_TITLE_MAX_LENGTH, type PostInput } from "@/src/entity/post";
+import {
+  POST_CONTENT_MAX_LENGTH,
+  POST_TITLE_MAX_LENGTH,
+  type PostInput,
+} from "@/src/entity/post";
 import { TextField } from "@/src/entity/ui";
 
 import { usePostForm } from "./hook";
@@ -14,8 +18,14 @@ type Props = {
 
 const EMPTY_POST: PostInput = { title: "", content: "" };
 
-export function PostForm({ initialValue = EMPTY_POST, submitLabel, onSubmit, onCancel }: Props) {
-  const { title, setTitle, content, setContent, errors, pending, submit } = usePostForm(initialValue, onSubmit);
+export function PostForm({
+  initialValue = EMPTY_POST,
+  submitLabel,
+  onSubmit,
+  onCancel,
+}: Props) {
+  const { title, setTitle, content, setContent, errors, pending, submit } =
+    usePostForm(initialValue, onSubmit);
 
   return (
     <form className="post-form" onSubmit={submit} noValidate>

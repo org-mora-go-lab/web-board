@@ -12,5 +12,7 @@ export const metadata: Metadata = { title: "회원가입" };
 
 export default async function SignupPage({ searchParams }: Props) {
   const { next } = await searchParams;
-  return <Signup next={toSafeNextPath(typeof next === "string" ? next : null)} />;
+  return (
+    <Signup next={toSafeNextPath(typeof next === "string" ? next : null)} />
+  );
 }

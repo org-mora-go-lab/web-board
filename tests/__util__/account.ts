@@ -1,17 +1,34 @@
-import { type APIRequestContext, type APIResponse, expect, type Page, request } from "@playwright/test";
+import {
+  type APIRequestContext,
+  type APIResponse,
+  expect,
+  type Page,
+  request,
+} from "@playwright/test";
 
 import { BASE_URL } from "../__constant__";
 import { uniqueId } from "./unique";
 
-export type EmailAccount = { email: string; nickname: string; password: string };
+export type EmailAccount = {
+  email: string;
+  nickname: string;
+  password: string;
+};
 
 export function newEmailAccount(): EmailAccount {
   const id = uniqueId("u");
-  return { email: `${id}@example.com`, nickname: `닉${id}`.slice(0, 20), password: "password1234" };
+  return {
+    email: `${id}@example.com`,
+    nickname: `닉${id}`.slice(0, 20),
+    password: "password1234",
+  };
 }
 
 // Signs up through the API; the session cookie lands in `api`'s cookie jar.
-export async function signupByApi(api: APIRequestContext, account = newEmailAccount()) {
+export async function signupByApi(
+  api: APIRequestContext,
+  account = newEmailAccount(),
+) {
   const response = await api.post("/api/auth/signup", { data: account });
   expect(response.status()).toBe(201);
   const { user } = await response.json();
@@ -34,6 +51,10 @@ export const newAnonymousApi = () => request.newContext({ baseURL: BASE_URL });
 export function readSetCookie(response: APIResponse, name: string) {
   const header = response
     .headersArray()
-    .find(({ name: headerName, value }) => headerName.toLowerCase() === "set-cookie" && value.startsWith(`${name}=`));
+    .find(
+      ({ name: headerName, value }) =>
+        headerName.toLowerCase() === "set-cookie" &&
+        value.startsWith(`${name}=`),
+    );
   return header?.value;
 }

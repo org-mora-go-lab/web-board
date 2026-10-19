@@ -7,7 +7,10 @@ import { type PostInput, validatePostInput } from "@/src/entity/post";
 
 type Errors = Partial<Record<keyof PostInput | "form", string>>;
 
-export function usePostForm(initialValue: PostInput, onSubmit: (input: PostInput) => Promise<void>) {
+export function usePostForm(
+  initialValue: PostInput,
+  onSubmit: (input: PostInput) => Promise<void>,
+) {
   const [title, setTitle] = useState(initialValue.title);
   const [content, setContent] = useState(initialValue.content);
   const [errors, setErrors] = useState<Errors>({});
@@ -26,7 +29,11 @@ export function usePostForm(initialValue: PostInput, onSubmit: (input: PostInput
       await onSubmit(input);
     } catch (caught) {
       const error = toApiError(caught);
-      setErrors(Object.keys(error.fields).length > 0 ? error.fields : { form: error.message });
+      setErrors(
+        Object.keys(error.fields).length > 0
+          ? error.fields
+          : { form: error.message },
+      );
       setPending(false);
     }
   };

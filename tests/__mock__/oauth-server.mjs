@@ -6,7 +6,8 @@ import { createServer } from "node:http";
 const PORT = Number(process.env.MOCK_OAUTH_PORT || 4100);
 const PROVIDERS = new Set(["kakao"]);
 
-const encode = (value) => Buffer.from(JSON.stringify(value)).toString("base64url");
+const encode = (value) =>
+  Buffer.from(JSON.stringify(value)).toString("base64url");
 const decode = (value) => {
   try {
     return JSON.parse(Buffer.from(String(value), "base64url").toString());
@@ -40,7 +41,10 @@ const redirect = (response, url) => {
 function authorizePage(provider, query) {
   const defaultAccount = process.env.MOCK_DEFAULT_ACCOUNT === "1";
   const hidden = ["client_id", "redirect_uri", "state", "scope"]
-    .map((name) => `<input type="hidden" name="${name}" value="${escapeHtml(query.get(name))}">`)
+    .map(
+      (name) =>
+        `<input type="hidden" name="${name}" value="${escapeHtml(query.get(name))}">`,
+    )
     .join("");
   const title = "Mock Kakao";
   return `<!doctype html><html lang="ko"><head><meta charset="utf-8"><title>${title}</title></head><body>
@@ -71,10 +75,14 @@ const server = createServer(async (request, response) => {
   if (url.pathname === "/health") return send(response, 200, { ok: true });
 
   const [, provider, action] = url.pathname.split("/");
-  if (!PROVIDERS.has(provider)) return send(response, 404, { error: "unknown_provider" });
+  if (!PROVIDERS.has(provider))
+    return send(response, 404, { error: "unknown_provider" });
 
   if (action === "authorize" && request.method === "GET") {
-    if (!url.searchParams.get("client_id") || url.searchParams.get("response_type") !== "code") {
+    if (
+      !url.searchParams.get("client_id") ||
+      url.searchParams.get("response_type") !== "code"
+    ) {
       return send(response, 400, "invalid authorize request");
     }
     return send(response, 200, authorizePage(provider, url.searchParams));
@@ -86,10 +94,19 @@ const server = createServer(async (request, response) => {
     if (form.decision === "deny") {
       target.searchParams.set("error", "access_denied");
     } else {
-      const account = { id: form.id, nickname: form.nickname, email: form.email || null };
+      const account = {
+        id: form.id,
+        nickname: form.nickname,
+        email: form.email || null,
+      };
       target.searchParams.set(
         "code",
-        encode({ provider, account, clientId: form.client_id, redirectUri: form.redirect_uri }),
+        encode({
+          provider,
+          account,
+          clientId: form.client_id,
+          redirectUri: form.redirect_uri,
+        }),
       );
     }
     target.searchParams.set("state", form.state);
@@ -106,16 +123,24 @@ const server = createServer(async (request, response) => {
       code.redirectUri === form.redirect_uri &&
       !!form.client_secret;
     if (!valid) return send(response, 400, { error: "invalid_grant" });
-    return send(response, 200, { access_token: encode({ provider, account: code.account }), token_type: "bearer" });
+    return send(response, 200, {
+      access_token: encode({ provider, account: code.account }),
+      token_type: "bearer",
+    });
   }
 
   if (action === "userinfo" && request.method === "GET") {
-    const token = decode((request.headers.authorization ?? "").replace(/^Bearer /, ""));
-    if (token?.provider !== provider) return send(response, 401, { error: "invalid_token" });
+    const token = decode(
+      (request.headers.authorization ?? "").replace(/^Bearer /, ""),
+    );
+    if (token?.provider !== provider)
+      return send(response, 401, { error: "invalid_token" });
     return send(response, 200, profileFor(token.account));
   }
 
   return send(response, 404, { error: "not_found" });
 });
 
-server.listen(PORT, () => console.log(`mock oauth server listening on ${PORT}`));
+server.listen(PORT, () =>
+  console.log(`mock oauth server listening on ${PORT}`),
+);

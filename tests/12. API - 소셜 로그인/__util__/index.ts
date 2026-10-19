@@ -1,1 +1,5 @@
-export { approveConsentByApi, callCallbackByApi, startOAuthByApi } from "./oauth-api";
+export {
+  approveConsentByApi,
+  callCallbackByApi,
+  startOAuthByApi,
+} from "./oauth-api";

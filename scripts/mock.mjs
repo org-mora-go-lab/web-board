@@ -40,7 +40,8 @@ async function checkPort(port) {
 }
 
 try {
-  if (appPort === oauthPort) throw new Error("Mock app and OAuth ports must be different.");
+  if (appPort === oauthPort)
+    throw new Error("Mock app and OAuth ports must be different.");
   await checkPort(appPort);
   await checkPort(oauthPort);
   const env = {
@@ -66,7 +67,10 @@ try {
   process.on("SIGINT", () => stop(0));
   process.on("SIGTERM", () => stop(0));
   start(["tests/__mock__/oauth-server.mjs"], env);
-  start(["node_modules/next/dist/bin/next", "dev", "--port", String(appPort)], env);
+  start(
+    ["node_modules/next/dist/bin/next", "dev", "--port", String(appPort)],
+    env,
+  );
   console.log(`Mock Board: ${appUrl}`);
 } catch (error) {
   console.error(`Unable to start mock environment: ${error.message}`);

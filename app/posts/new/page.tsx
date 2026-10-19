@@ -1,1 +1,4 @@
-export { PostWritePage as default, PostWritePageMetadata as metadata } from "@/src/page";
+export {
+  PostWritePage as default,
+  PostWritePageMetadata as metadata,
+} from "@/src/page";

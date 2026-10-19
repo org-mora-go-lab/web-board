@@ -12,7 +12,8 @@ export function useRequireLogin() {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (ready && !user) router.replace(`/login?next=${encodeURIComponent(pathname)}`);
+    if (ready && !user)
+      router.replace(`/login?next=${encodeURIComponent(pathname)}`);
   }, [ready, user, router, pathname]);
 
   return { user, ready: ready && !!user };

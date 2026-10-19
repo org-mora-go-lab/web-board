@@ -18,7 +18,10 @@
     margin: 0 auto;
     padding: 0 20px;
 
-    @media (max-width: v.$mobile) { gap: 12px; padding: 0 16px; }
+    @media (max-width: v.$mobile) {
+      gap: 12px;
+      padding: 0 16px;
+    }
   }
 
   .header-logo {
@@ -42,13 +45,30 @@
     font-weight: 700;
   }
 
-  .header-divider { height: 22px; width: 1px; background: v.$line-strong; }
-  .header-section { color: v.$sub; font-size: 13px; font-weight: 500; }
-  .header-section:hover { color: v.$ink; }
-  .header-nav { min-width: 0; display: flex; justify-content: flex-end; margin-left: auto; }
+  .header-divider {
+    height: 22px;
+    width: 1px;
+    background: v.$line-strong;
+  }
+  .header-section {
+    color: v.$sub;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .header-section:hover {
+    color: v.$ink;
+  }
+  .header-nav {
+    min-width: 0;
+    display: flex;
+    justify-content: flex-end;
+    margin-left: auto;
+  }
 
   @media (max-width: v.$mobile) {
     .header-divider,
-    .header-section { display: none; }
+    .header-section {
+      display: none;
+    }
   }
 }

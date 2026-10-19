@@ -9,7 +9,10 @@ type Props = {
 // Centered placeholder for loading, empty, not-found and error states.
 export function StatusMessage({ message, tone = "info", action }: Props) {
   return (
-    <div className={`status-message is-${tone}`} role={tone === "error" ? "alert" : "status"}>
+    <div
+      className={`status-message is-${tone}`}
+      role={tone === "error" ? "alert" : "status"}
+    >
       <p>{message}</p>
       {action}
     </div>

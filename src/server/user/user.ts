@@ -38,10 +38,20 @@ export async function findUserById(id: number): Promise<UserDto | null> {
       ORDER BY accounts.id LIMIT 1`,
     [id],
   );
-  return row ? { id: row.id, nickname: row.nickname, email: row.email, provider: row.provider } : null;
+  return row
+    ? {
+        id: row.id,
+        nickname: row.nickname,
+        email: row.email,
+        provider: row.provider,
+      }
+    : null;
 }
 
-export async function findAccount(provider: AuthProvider, providerAccountId: string) {
+export async function findAccount(
+  provider: AuthProvider,
+  providerAccountId: string,
+) {
   const db = await getDb();
   const row = await db.get<AccountRow>(
     "SELECT user_id, password_hash FROM accounts WHERE provider = ? AND provider_account_id = ?",
@@ -50,7 +60,10 @@ export async function findAccount(provider: AuthProvider, providerAccountId: str
   return row ? { userId: row.user_id, passwordHash: row.password_hash } : null;
 }
 
-export async function updateUserNickname(id: number, nickname: string): Promise<void> {
+export async function updateUserNickname(
+  id: number,
+  nickname: string,
+): Promise<void> {
   const db = await getDb();
   await db.run("UPDATE users SET nickname = ? WHERE id = ?", [nickname, id]);
 }
@@ -66,9 +79,20 @@ export async function createUser(user: NewUser): Promise<UserDto> {
     await transaction.run(
       `INSERT INTO accounts (user_id, provider, provider_account_id, password_hash, created_at)
        VALUES (?, ?, ?, ?, ?)`,
-      [lastInsertId, user.provider, user.providerAccountId, user.passwordHash ?? null, now],
+      [
+        lastInsertId,
+        user.provider,
+        user.providerAccountId,
+        user.passwordHash ?? null,
+        now,
+      ],
     );
     return lastInsertId;
   });
-  return { id: userId, nickname: user.nickname, email: user.email, provider: user.provider };
+  return {
+    id: userId,
+    nickname: user.nickname,
+    email: user.email,
+    provider: user.provider,
+  };
 }

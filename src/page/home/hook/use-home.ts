@@ -16,7 +16,11 @@ function buildListHref(page: number, query: string) {
 
 export function useHome(page: number, query: string) {
   const router = useRouter();
-  const { data: list, error, loading } = useApiQuery(`${page}:${query}`, () => fetchPosts({ page, query }));
+  const {
+    data: list,
+    error,
+    loading,
+  } = useApiQuery(`${page}:${query}`, () => fetchPosts({ page, query }));
 
   return {
     list,

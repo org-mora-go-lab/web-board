@@ -1,6 +1,11 @@
 import { expect, test } from "@playwright/test";
 
-import { createPostByApi, loginAsNewUser, signupByApi, titleField } from "../__util__";
+import {
+  createPostByApi,
+  loginAsNewUser,
+  signupByApi,
+  titleField,
+} from "../__util__";
 
 test("2. 작성자가 아닌 사용자가 수정 화면에 접근하면 수정 권한이 없습니다를 표시하고 폼을 표시하지 않는다", async ({
   page,

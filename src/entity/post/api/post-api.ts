@@ -10,12 +10,20 @@ export function fetchPosts({ page, query }: { page: number; query: string }) {
 }
 
 export const fetchPost = (id: string) =>
-  apiRequest<PostResponse>(`/api/posts/${encodeURIComponent(id)}`).then(({ post }) => post);
+  apiRequest<PostResponse>(`/api/posts/${encodeURIComponent(id)}`).then(
+    ({ post }) => post,
+  );
 
 export const createPost = (input: PostInput) =>
-  apiRequest<PostResponse>("/api/posts", { method: "POST", body: input }).then(({ post }) => post);
+  apiRequest<PostResponse>("/api/posts", { method: "POST", body: input }).then(
+    ({ post }) => post,
+  );
 
 export const updatePost = (id: number, input: PostInput) =>
-  apiRequest<PostResponse>(`/api/posts/${id}`, { method: "PATCH", body: input }).then(({ post }) => post);
+  apiRequest<PostResponse>(`/api/posts/${id}`, {
+    method: "PATCH",
+    body: input,
+  }).then(({ post }) => post);
 
-export const deletePost = (id: number) => apiRequest<void>(`/api/posts/${id}`, { method: "DELETE" });
+export const deletePost = (id: number) =>
+  apiRequest<void>(`/api/posts/${id}`, { method: "DELETE" });

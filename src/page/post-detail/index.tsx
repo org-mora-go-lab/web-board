@@ -22,15 +22,29 @@ const backToList = (
 );
 
 export function PostDetail({ id }: Props) {
-  const { post, error, loading, isAuthor, confirmOpen, deleting, deleteError, openConfirm, closeConfirm, confirmDelete } =
-    usePostDetail(id);
+  const {
+    post,
+    error,
+    loading,
+    isAuthor,
+    confirmOpen,
+    deleting,
+    deleteError,
+    openConfirm,
+    closeConfirm,
+    confirmDelete,
+  } = usePostDetail(id);
 
   const body = loading ? (
     <StatusMessage message="게시글을 불러오는 중입니다." />
   ) : error || !post ? (
     <StatusMessage
       tone="error"
-      message={error?.status === 404 || !error ? "게시글을 찾을 수 없습니다." : error.message}
+      message={
+        error?.status === 404 || !error
+          ? "게시글을 찾을 수 없습니다."
+          : error.message
+      }
       action={backToList}
     />
   ) : (
@@ -45,7 +59,11 @@ export function PostDetail({ id }: Props) {
                 <Pencil size={15} aria-hidden="true" />
                 수정
               </Link>
-              <button className="button is-danger" type="button" onClick={openConfirm}>
+              <button
+                className="button is-danger"
+                type="button"
+                onClick={openConfirm}
+              >
                 <Trash2 size={15} aria-hidden="true" />
                 삭제
               </button>

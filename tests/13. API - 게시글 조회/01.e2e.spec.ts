@@ -13,8 +13,17 @@ test("1. GET /api/posts는 최신순 목록과 page, size, total, totalPages를 
   const response = await request.get(`/api/posts?q=${tag}`);
   expect(response.status()).toBe(200);
   const body = await response.json();
-  expect(body).toEqual({ posts: expect.any(Array), page: 1, size: 10, total: 2, totalPages: 1 });
-  expect(body.posts.map(({ id }: { id: number }) => id)).toEqual([newer.id, older.id]);
+  expect(body).toEqual({
+    posts: expect.any(Array),
+    page: 1,
+    size: 10,
+    total: 2,
+    totalPages: 1,
+  });
+  expect(body.posts.map(({ id }: { id: number }) => id)).toEqual([
+    newer.id,
+    older.id,
+  ]);
   expect(body.posts[0]).toEqual({
     id: newer.id,
     title: newer.title,

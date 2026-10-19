@@ -10,7 +10,12 @@ test("2. 백엔드는 /api JSON API를 libSQL 로컬 파일에 저장하고 오�
   const list = await request.get("/api/posts");
   expect(list.status()).toBe(200);
   expect(list.headers()["content-type"]).toContain("application/json");
-  expect(await list.json()).toEqual(expect.objectContaining({ posts: expect.any(Array), total: expect.any(Number) }));
+  expect(await list.json()).toEqual(
+    expect.objectContaining({
+      posts: expect.any(Array),
+      total: expect.any(Number),
+    }),
+  );
 
   const missing = await request.get("/api/posts/999999999");
   expect(missing.status()).toBe(404);

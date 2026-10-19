@@ -1,1 +1,5 @@
-export { removePost as DELETE, getPost as GET, patchPost as PATCH } from "@/src/server/post";
+export {
+  removePost as DELETE,
+  getPost as GET,
+  patchPost as PATCH,
+} from "@/src/server/post";

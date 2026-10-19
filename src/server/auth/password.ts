@@ -1,7 +1,11 @@
 import { randomBytes, scrypt, timingSafeEqual } from "node:crypto";
 import { promisify } from "node:util";
 
-const scryptAsync = promisify(scrypt) as (password: string, salt: string, keylen: number) => Promise<Buffer>;
+const scryptAsync = promisify(scrypt) as (
+  password: string,
+  salt: string,
+  keylen: number,
+) => Promise<Buffer>;
 const KEY_LENGTH = 64;
 
 // Stored as `scrypt$<salt>$<hash>` so the algorithm can change later without a migration.

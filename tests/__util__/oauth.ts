@@ -27,15 +27,27 @@ export async function openProviderConsent(page: Page, provider: Provider) {
 }
 
 // Fills the mock consent screen and approves (or denies) it.
-export async function answerProviderConsent(page: Page, account: OAuthAccount, decision: "approve" | "deny" = "approve") {
+export async function answerProviderConsent(
+  page: Page,
+  account: OAuthAccount,
+  decision: "approve" | "deny" = "approve",
+) {
   await page.getByLabel("계정 ID").fill(account.id);
   await page.getByLabel("닉네임").fill(account.nickname);
   await page.getByLabel("이메일").fill(account.email);
-  await page.getByRole("button", { name: decision === "approve" ? "동의하고 계속하기" : "취소" }).click();
+  await page
+    .getByRole("button", {
+      name: decision === "approve" ? "동의하고 계속하기" : "취소",
+    })
+    .click();
 }
 
 // Full social sign-in from the login page; resolves once the app shows the signed-in header.
-export async function loginWithProvider(page: Page, provider: Provider, account = newOAuthAccount(provider)) {
+export async function loginWithProvider(
+  page: Page,
+  provider: Provider,
+  account = newOAuthAccount(provider),
+) {
   await page.goto("/login");
   await openProviderConsent(page, provider);
   await answerProviderConsent(page, account);

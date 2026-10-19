@@ -14,7 +14,8 @@ type Props = {
 
 export function Signup({ next }: Props) {
   const { setUser } = useRedirectWhenSignedIn(next);
-  const loginHref = next === "/" ? "/login" : `/login?next=${encodeURIComponent(next)}`;
+  const loginHref =
+    next === "/" ? "/login" : `/login?next=${encodeURIComponent(next)}`;
 
   return (
     <>
@@ -22,7 +23,9 @@ export function Signup({ next }: Props) {
       <main className="signup">
         <section className="signup-card">
           <h1>회원가입</h1>
-          <p className="signup-description">카카오 계정으로 바로 가입할 수 있어요.</p>
+          <p className="signup-description">
+            카카오 계정으로 바로 가입할 수 있어요.
+          </p>
           <SocialLogin next={next} />
           <div className="signup-divider">또는 이메일로 가입</div>
           <EmailSignupForm onSuccess={setUser} />

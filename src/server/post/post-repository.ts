@@ -38,18 +38,31 @@ const toSummary = (row: PostRow): PostSummaryDto => ({
 });
 
 // Escapes LIKE wildcards so a search for "50%" matches the literal text.
-const toLikePattern = (query: string) => `%${query.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
+const toLikePattern = (query: string) =>
+  `%${query.replace(/[\\%_]/g, (char) => `\\${char}`)}%`;
 
-export async function listPosts({ page, size, query }: { page: number; size: number; query: string }) {
+export async function listPosts({
+  page,
+  size,
+  query,
+}: {
+  page: number;
+  size: number;
+  query: string;
+}) {
   const db = await getDb();
-  const where = query ? "WHERE posts.title LIKE ? ESCAPE '\\' OR posts.content LIKE ? ESCAPE '\\'" : "";
+  const where = query
+    ? "WHERE posts.title LIKE ? ESCAPE '\\' OR posts.content LIKE ? ESCAPE '\\'"
+    : "";
   const params = query ? [toLikePattern(query), toLikePattern(query)] : [];
-  const { total } = (await db.get<{ total: number }>(`SELECT COUNT(*) AS total FROM posts ${where}`, params))!;
-  const rows = await db.all<PostRow>(`${SELECT_SUMMARY} ${where} ORDER BY posts.id DESC LIMIT ? OFFSET ?`, [
-    ...params,
-    size,
-    (page - 1) * size,
-  ]);
+  const { total } = (await db.get<{ total: number }>(
+    `SELECT COUNT(*) AS total FROM posts ${where}`,
+    params,
+  ))!;
+  const rows = await db.all<PostRow>(
+    `${SELECT_SUMMARY} ${where} ORDER BY posts.id DESC LIMIT ? OFFSET ?`,
+    [...params, size, (page - 1) * size],
+  );
   return { posts: rows.map(toSummary), total };
 }
 
@@ -77,12 +90,10 @@ export async function insertPost(authorId: number, input: PostInput) {
 
 export async function updatePost(id: number, input: PostInput) {
   const db = await getDb();
-  await db.run("UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?", [
-    input.title,
-    input.content,
-    new Date().toISOString(),
-    id,
-  ]);
+  await db.run(
+    "UPDATE posts SET title = ?, content = ?, updated_at = ? WHERE id = ?",
+    [input.title, input.content, new Date().toISOString(), id],
+  );
   return findPost(id);
 }
 

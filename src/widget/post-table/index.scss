@@ -28,7 +28,9 @@
     text-align: left;
 
     &:first-child,
-    &:last-child { text-align: center; }
+    &:last-child {
+      text-align: center;
+    }
   }
 
   // Phones keep only the title and date columns.

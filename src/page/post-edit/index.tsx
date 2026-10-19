@@ -27,11 +27,19 @@ export function PostEdit({ id }: Props) {
   ) : error || !post ? (
     <StatusMessage
       tone="error"
-      message={error?.status === 404 || !error ? "게시글을 찾을 수 없습니다." : error.message}
+      message={
+        error?.status === 404 || !error
+          ? "게시글을 찾을 수 없습니다."
+          : error.message
+      }
       action={backToList}
     />
   ) : !isAuthor ? (
-    <StatusMessage tone="error" message="수정 권한이 없습니다." action={backToList} />
+    <StatusMessage
+      tone="error"
+      message="수정 권한이 없습니다."
+      action={backToList}
+    />
   ) : (
     <PostForm
       initialValue={{ title: post.title, content: post.content }}
