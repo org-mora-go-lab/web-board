@@ -1,7 +1,7 @@
 import { spawn } from "node:child_process";
 import { createServer } from "node:net";
 
-const appPort = Number(process.env.MOCK_APP_PORT || 3200);
+const appPort = Number(process.env.MOCK_APP_PORT || 3500);
 const oauthPort = Number(process.env.MOCK_OAUTH_PORT || 4200);
 const appUrl = `http://localhost:${appPort}`;
 const oauthUrl = `http://localhost:${oauthPort}`;

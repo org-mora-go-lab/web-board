@@ -19,7 +19,7 @@
 ```bash
 npm install
 cp .env.example .env.local   # 소셜 로그인 키 입력 (아래 참고)
-npm run dev                  # http://localhost:3000
+npm run dev                  # http://localhost:3200
 ```
 
 `TURSO_DATABASE_URL`을 설정하지 않은 로컬 환경에서는 데이터가 `data/board.db`(`DATABASE_PATH`로 변경 가능)에 자동으로 생성·저장됩니다. 기존 SQLite 파일도 그대로 사용할 수 있습니다. 소셜 로그인 키가 없어도 이메일 가입으로 바로 사용할 수 있습니다.
@@ -49,7 +49,7 @@ Vercel Functions의 배포 경로(`/var/task`)에는 DB 파일을 저장할 수 
 Mock 실행은 Turso 및 Vercel 환경변수를 무시하고 분리된 로컬 DB만 사용합니다.
 
 ```bash
-npm run mock                 # http://localhost:3200
+npm run mock                 # http://localhost:3500
 ```
 
 실제 소셜 로그인 키나 `.env.local` 설정 없이 사용할 수 있습니다. 로그인 화면에서 `카카오로 시작하기`를 누른 뒤, 기본값이 채워진 mock 인가 화면에서 `동의하고 계속하기`를 선택하면 `Mock User`로 로그인합니다. 계정 ID는 `mock-kakao-user`입니다. 인가 화면의 값을 변경하면 다른 mock 사용자로 로그인할 수도 있습니다.
@@ -64,7 +64,7 @@ npm run mock                 # http://localhost:3200
 
 각 콘솔에 아래 Redirect URI를 등록합니다. 배포 환경에서는 도메인을 바꿔 등록하고, 프록시 뒤에서 실행하면 `APP_URL`(예: `https://board.example.com`)을 설정하세요.
 
-- 카카오: `http://localhost:3000/api/auth/oauth/kakao/callback`
+- 카카오: `http://localhost:3200/api/auth/oauth/kakao/callback`
   - 카카오 로그인 활성화, 동의항목에서 `닉네임`(필수)과 `카카오계정(이메일)`(선택)을 설정합니다.
 
 ## 스크립트
@@ -78,7 +78,7 @@ npm run mock                 # http://localhost:3200
 | `npm run format` / `npm run format:check` | Prettier 적용 / 형식 검사                       |
 | `npm run test:e2e`                        | Playwright E2E 전체 실행                        |
 
-`npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3100), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오 대신 `tests/__mock__/oauth-server.mjs`(포트 4100)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
+`npm run test:e2e`는 개발 서버와 겹치지 않도록 별도 포트(3600), 빌드 폴더(`.next-e2e`), 데이터베이스(`data/e2e.db`)로 앱을 띄우고, 실제 카카오 대신 `tests/__mock__/oauth-server.mjs`(포트 4500)를 사용합니다. 처음 실행할 때는 `npx playwright install chromium`으로 브라우저를 설치하세요.
 
 mock 실행 요구사항은 `npm run mock`으로 별도 앱(3300), OAuth 서버(4300), DB(`data/e2e-mock.db`), 빌드 폴더(`.next-e2e-mock`)를 실행해 검증하므로 사용자용 mock 데이터와도 분리됩니다.
 

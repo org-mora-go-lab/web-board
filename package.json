@@ -3,10 +3,10 @@
   "version": "1.0.4",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev --port 3200",
     "mock": "node scripts/mock.mjs",
     "build": "next build",
-    "start": "next start",
+    "start": "next start --port 3200",
     "lint": "eslint",
     "format": "prettier . --write",
     "format:check": "prettier . --check",

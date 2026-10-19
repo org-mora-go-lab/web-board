@@ -37,7 +37,7 @@ export default defineConfig({
       command: "node tests/__mock__/oauth-server.mjs",
       url: `${MOCK_OAUTH_URL}/health`,
       env: { MOCK_OAUTH_PORT: String(MOCK_OAUTH_PORT) },
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
     },
     {
       // Separate port, build dir and database so the suite never touches `npm run dev` state.
@@ -53,7 +53,7 @@ export default defineConfig({
         APP_URL: `${BASE_URL}/`,
         ...mockOAuthEnv(),
       },
-      reuseExistingServer: !process.env.CI,
+      reuseExistingServer: false,
       timeout: 120_000,
     },
     {
